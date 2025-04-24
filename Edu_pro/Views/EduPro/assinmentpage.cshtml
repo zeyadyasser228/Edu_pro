@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="EDUPRO images/logo.jpeg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/assigments.css">
+
+    <title>Assignments & Quizzes</title>
+   
+</head>
+<body>
+    <section class="assignments" id="assignments">
+        <h2 class="section-title">Assignments & Quizzes</h2>
+        <div class="card-container">
+            <div class="card" onclick="showModal('assignments')">
+                <div class="card-icon">📝</div>
+                <h3 class="card-title">Assignments</h3>
+                <p class="card-description">View and submit your course assignments here.</p>
+            </div>
+            <div class="card" onclick="showModal('quizzes')">
+                <div class="card-icon">🧠</div>
+                <h3 class="card-title">Quizzes</h3>
+                <p class="card-description">Test your knowledge with course quizzes.</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="assignmentsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('assignments')">&times;</span>
+            <h2>Assignments</h2>
+            <p>There are currently no assignments for this course. Check back later!</p>
+        </div>
+    </div>
+
+    <div id="quizzesModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('quizzes')">&times;</span>
+            <h2>Quizzes</h2>
+            <p>There are currently no quizzes for this course. Check back later!</p>
+        </div>
+    </div>
+
+    <script>
+        function showModal(type) {
+            document.getElementById(type + 'Modal').style.display = "block";
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+﻿@model object
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+
+    // Determine which model we're working with
+    var isLoginModel = Model is EduPro.Models.ViewModels.LoginViewModel;
+    var loginModel = isLoginModel ? (EduPro.Models.ViewModels.LoginViewModel)Model : new EduPro.Models.ViewModels.LoginViewModel();
+    var signupModel = !isLoginModel ? (EduPro.Models.ViewModels.SignupViewModel)Model : new EduPro.Models.ViewModels.SignupViewModel();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="~/images/logo.jpeg" type="image/svg+xml" />
+    <link rel="stylesheet" href="~/css/signup.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <title>Login - EduPro</title>
+    <style>
+        /* Toast container */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Toast message */
+        .toast {
+            min-width: 300px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 4px solid;
+        }
+
+        /* Toast types */
+        .toast-success {
+            border-left-color: #22c55e;
+            color: #16a34a;
+        }
+
+        .toast-error {
+            border-left-color: #dc2626;
+            color: #b91c1c;
+        }
+
+        .toast-warning {
+            border-left-color: #f59e0b;
+            color: #d97706;
+        }
+
+        /* Toast show class */
+        .toast-show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Close button */
+        .toast-close {
+            background: none;
+            border: none;
+            padding: 0;
+            margin-left: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            color: #9ca3af;
+            transition: color 0.2s ease;
+            box-shadow: none;
+        }
+
+            .toast-close:hover {
+                color: #4b5563;
+                background: none;
+                transform: none;
+                box-shadow: none;
+            }
+    </style>
+</head>
+<body>
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="container" id="container" class="@(!isLoginModel ? "right-panel-active" : "")">
+        <div class="form-container sign-up-container">
+            <form asp-controller="Auth" asp-action="Signup" method="post" enctype="multipart/form-data" id="signupForm">
+                <h1>Create Account</h1>
+                <div class="social-container">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-google"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email for registration</span>
+
+                <div class="form-group">
+                    <input name="FullName" type="text" placeholder="Name" required value="@signupModel.FullName" />
+                </div>
+                <div class="form-group">
+                    <input name="Email" type="email" placeholder="Email" required value="@signupModel.Email" />
+                </div>
+                <div class="form-group">
+                    <input name="Password" type="password" placeholder="Password" required />
+                </div>
+                <div class="form-group">
+                    <input name="ConfirmPassword" type="password" placeholder="Confirm Password" required />
+                </div>
+                <div class="form-group file-input-container">
+                   
+                    <input id="photoUpload" name="Photo" type="file" accept="image/*" required />
+                    <label for="photoUpload" class="file-input-label">
+                        <i class="fas fa-upload"></i> Upload Profile Photo
+                    </label>
+                </div>
+                <button type="submit">Sign Up</button>
+                <div class="navigation-links">
+                    Already have an account? <a href="#" id="signInLink">Sign In</a>
+                </div>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form asp-controller="Auth" asp-action="Login" method="post">
+                <h1>Sign In</h1>
+                <div class="social-container">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-google"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your account</span>
+
+                <div class="form-group">
+                    <input name="Email" type="email" placeholder="Email" required value="@loginModel.Email" />
+                </div>
+                <div class="form-group">
+                    <input name="Password" type="password" placeholder="Password" required />
+                </div>
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input name="RememberMe" type="checkbox" @(loginModel.RememberMe ? "checked" : "") />
+                        <span>Remember me</span>
+                    </label>
+                </div>
+                <a asp-controller="Edupro" asp-action="forgetpass" class="forgot-password">Forgot your password?</a>
+                <button type="submit">Sign In</button>
+                <div class="navigation-links">
+                    Don't have an account? <a href="#" id="signUpLink">Sign Up</a>
+                </div>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start your journey with us</p>
+                    <button class="ghost" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        // Toast notification system
+        function showToast(message, type = 'success', duration = 5000) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+
+            // Create icon based on type
+            const icon = document.createElement('i');
+            switch(type) {
+                case 'success':
+                    icon.className = 'fas fa-check-circle';
+                    break;
+                case 'error':
+                    icon.className = 'fas fa-times-circle';
+                    break;
+                case 'warning':
+                    icon.className = 'fas fa-exclamation-circle';
+                    break;
+            }
+            icon.style.marginRight = '10px';
+
+            const contentDiv = document.createElement('div');
+            contentDiv.style.flex = '1';
+            contentDiv.style.display = 'flex';
+            contentDiv.style.alignItems = 'center';
+
+            const messageSpan = document.createElement('span');
+            messageSpan.textContent = message;
+
+            const closeButton = document.createElement('button');
+            closeButton.className = 'toast-close';
+            closeButton.innerHTML = '×';
+            closeButton.onclick = () => removeToast(toast);
+
+            contentDiv.appendChild(icon);
+            contentDiv.appendChild(messageSpan);
+            toast.appendChild(contentDiv);
+            toast.appendChild(closeButton);
+            container.appendChild(toast);
+
+            // Trigger reflow
+            toast.offsetHeight;
+
+            // Show toast
+            requestAnimationFrame(() => {
+                toast.classList.add('toast-show');
+            });
+
+            // Auto remove
+            if (duration) {
+                setTimeout(() => removeToast(toast), duration);
+            }
+        }
+
+        function removeToast(toast) {
+            toast.classList.remove('toast-show');
+            setTimeout(() => toast.remove(), 300);
+        }
+
+        // Panel switching functionality
+        const signUpButton = document.getElementById("signUp");
+        const signInButton = document.getElementById("signIn");
+        const signUpLink = document.getElementById("signUpLink");
+        const signInLink = document.getElementById("signInLink");
+        const container = document.getElementById("container");
+
+        @if (!isLoginModel)
+        {
+            <text>
+                    container.classList.add("right-panel-active");
+            </text>
+        }
+
+        signUpButton.addEventListener("click", () => {
+            container.classList.add("right-panel-active");
+        });
+
+        signInButton.addEventListener("click", () => {
+            container.classList.remove("right-panel-active");
+        });
+
+        signUpLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            container.classList.add("right-panel-active");
+        });
+
+        signInLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            container.classList.remove("right-panel-active");
+        });
+
+        // Handle form validation messages
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle validation summary errors
+        @if (ViewData.ModelState.ErrorCount > 0)
+        {
+            foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <text>
+                                        showToast('@Html.Raw(error.ErrorMessage)', 'error');
+                    </text>
+                }
+            }
+        }
+
+            // Handle success message
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                        showToast('@Html.Raw(TempData["SuccessMessage"])', 'success');
+            </text>
+        }
+
+            // Handle signup error
+        @if (ViewData["SignupError"] != null)
+        {
+            <text>
+                        showToast('@Html.Raw(ViewData["SignupError"])', 'error');
+            </text>
+        }
+        });
+
+        // Password confirmation validation
+        $("#signupForm").submit(function(e) {
+            const password = $("input[name='Password']", this).val();
+            const confirmPassword = $("input[name='ConfirmPassword']", this).val();
+
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                showToast("Passwords do not match. Please try again.", 'error');
+                return false;
+            }
+            return true;
+        });
+    </script>
+</body>
+</html>

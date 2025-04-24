@@ -1,0 +1,671 @@
+﻿@model List<EduPro.Models.UserCourseModel>
+@{
+    ViewData["Title"] = "My Courses";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="~/images/logo.jpeg" type="image/svg+xml" />
+    <link rel="stylesheet" href="~/css/edupro.css" />
+    <link rel="stylesheet" href="~/css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <title>My Courses - EDU PRO</title>
+    <style>
+        /* User Dropdown Styles */
+        .user-dropdown {
+            position: relative;
+            margin-left: 15px;
+        }
+
+        .user-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--ff-poppins);
+            font-size: var(--fs-5);
+            color: var(--eerie-black-1);
+            padding: 5px 10px;
+            border-radius: var(--radius-5);
+            transition: background-color var(--transition-1);
+        }
+
+            .user-dropdown-toggle ion-icon {
+                font-size: 22px;
+            }
+
+            .user-dropdown-toggle .dropdown-arrow {
+                font-size: 16px;
+                transition: transform var(--transition-1);
+            }
+
+                .user-dropdown-toggle .dropdown-arrow.up {
+                    transform: rotate(180deg);
+                }
+
+            .user-dropdown-toggle:hover,
+            .user-dropdown-toggle:focus {
+                background-color: var(--platinum);
+                outline: none;
+            }
+
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background-color: var(--white);
+            border-radius: var(--radius-5);
+            box-shadow: var(--shadow-2);
+            min-width: 200px;
+            padding: 10px 0;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity var(--transition-2), visibility var(--transition-2), transform var(--transition-2);
+            border: 1px solid var(--light-gray);
+        }
+
+            .user-dropdown-menu.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+        .user-info-header {
+            padding: 10px 15px;
+            font-size: var(--fs-6);
+            color: var(--gray-web);
+            border-bottom: 1px solid var(--platinum);
+            margin-bottom: 5px;
+        }
+
+            .user-info-header strong {
+                color: var(--eerie-black-1);
+                font-weight: var(--fw-500);
+            }
+
+        .user-dropdown-menu a,
+        .user-dropdown-menu .logout-btn {
+            display: block;
+            padding: 10px 15px;
+            color: var(--eerie-black-1);
+            font-size: var(--fs-6);
+            text-decoration: none;
+            transition: background-color var(--transition-1), color var(--transition-1);
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-family: var(--ff-poppins);
+        }
+
+            .user-dropdown-menu a ion-icon,
+            .user-dropdown-menu .logout-btn ion-icon {
+                margin-right: 8px;
+                vertical-align: middle;
+                font-size: 18px;
+            }
+
+            .user-dropdown-menu a:hover,
+            .user-dropdown-menu .logout-btn:hover {
+                background-color: var(--kappel_15);
+                color: var(--kappel);
+            }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--platinum);
+            border: none;
+            margin: 5px 0;
+        }
+
+        .logout-form {
+            margin: 0;
+            padding: 0;
+        }
+
+        .user-dropdown-menu .logout-btn {
+            color: var(--radical-red);
+            font-weight: var(--fw-500);
+        }
+
+            .user-dropdown-menu .logout-btn:hover {
+                color: var(--white);
+                background-color: var(--radical-red);
+            }
+
+        /* Add styles for my courses page */
+        .my-courses-container {
+            padding: 40px 0;
+        }
+
+        .my-courses-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+            .my-courses-header h1 {
+                font-size: 2.5rem;
+                color: var(--eerie-black-1);
+                margin-bottom: 10px;
+            }
+
+            .my-courses-header p {
+                color: var(--gray-web);
+                max-width: 700px;
+                margin: 0 auto;
+            }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .course-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .course-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            }
+
+        .course-image {
+            height: 180px;
+            position: relative;
+        }
+
+            .course-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .course-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(0,0,0,0.3);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50;
+        }
+
+        .course-content {
+            padding: 20px;
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--eerie-black-1);
+        }
+
+        .course-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--gray-web);
+        }
+
+            .course-meta div {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+        .course-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .status-in-progress {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .continue-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+            .continue-btn:hover {
+                background-color: #388E3C;
+            }
+
+        .empty-courses {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+
+            .empty-courses i {
+                font-size: 60px;
+                color: #ddd;
+                margin-bottom: 20px;
+            }
+
+            .empty-courses h2 {
+                margin-bottom: 15px;
+                color: var(--eerie-black-1);
+            }
+
+            .empty-courses p {
+                color: var(--gray-web);
+                max-width: 500px;
+                margin: 0 auto 20px;
+            }
+
+        .browse-btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+            .browse-btn:hover {
+                background-color: #388E3C;
+            }
+
+        .back-to-home {
+            display: inline-block;
+            margin-top: 20px;
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+            .back-to-home:hover {
+                text-decoration: underline;
+            }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .courses-grid
+
+        {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        }
+
+        @@media (max-width: 576px) {
+            .courses-grid
+
+        {
+            grid-template-columns: 1fr;
+        }
+
+        }
+
+        /* Enhanced search container */
+        .search-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+            .search-container.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+        .search-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-5);
+            font-family: var(--ff-poppins);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .search-input:focus {
+                border-color: var(--kappel);
+                box-shadow: 0 0 0 3px var(--kappel_15);
+                outline: none;
+            }
+
+        .search-submit {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-web);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+            .search-submit:hover {
+                color: var(--kappel);
+            }
+    </style>
+</head>
+<body id="top">
+    <!-- HEADER -->
+    <header class="header" data-header>
+        <div class="container">
+            <a asp-controller="EduPro" asp-action="Index" class="logo">
+                <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+            </a>
+
+            <nav class="navbar" data-navbar>
+                <div class="wrapper">
+                    <a asp-controller="EduPro" asp-action="Index" class="logo">
+                        <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+                    </a>
+                    <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+                        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+
+                <ul class="navbar-list">
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" class="navbar-link" data-nav-link>Home</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" asp-fragment="about" class="navbar-link" data-nav-link>About</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="Course" asp-action="Index" class="navbar-link" data-nav-link>Courses</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" asp-fragment="footer" class="navbar-link" data-nav-link>Contact Us</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Header Actions: Search, Cart, Auth -->
+            <div class="header-actions">
+                <button class="header-action-btn search-toggle" aria-label="toggle search" title="Search" id="searchToggle">
+                    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                </button>
+
+                <a asp-controller="Cart" asp-action="Index" class="header-action-btn" aria-label="cart" title="Shopping Cart">
+                    <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
+                    <span class="btn-badge">2</span>
+                </a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <!-- User Dropdown - Shown when logged in -->
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-toggle" aria-label="User menu" title="User Menu">
+                            <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+                            <span>@User.Identity.Name</span>
+                            <ion-icon name="chevron-down-outline" class="dropdown-arrow" aria-hidden="true"></ion-icon>
+                        </button>
+                        <div class="user-dropdown-menu">
+                            <div class="user-info-header">
+                                Signed in as <br><strong>@User.Identity.Name</strong>
+                            </div>
+                            <a asp-controller="Courses" asp-action="MyCourses">
+                                <ion-icon name="book-outline" aria-hidden="true"></ion-icon>
+                                My Courses
+                            </a>
+                            <a asp-controller="EduPro" asp-action="Settings">
+                                <ion-icon name="settings-outline" aria-hidden="true"></ion-icon>
+                                Settings
+                            </a>
+                            <hr class="dropdown-divider">
+                            <form asp-controller="Auth" asp-action="Logout" method="post" class="logout-form">
+                                <button type="submit" class="logout-btn">
+                                    <ion-icon name="log-out-outline" aria-hidden="true"></ion-icon>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- Sign Up Button - Shown when not logged in -->
+                    <a class="btn has-before" asp-controller="Auth" asp-action="Signup">
+                        <span class="span">Sign Up</span>
+                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                    </a>
+                }
+            </div>
+
+            <!-- Mobile Nav Overlay -->
+            <div class="overlay" data-nav-toggler data-overlay></div>
+
+            <!-- Search Container -->
+            <div class="search-container" id="searchContainer">
+                <div class="search-wrapper">
+                    <form asp-controller="Course" asp-action="Search" method="get">
+                        <input type="text" name="searchTerm" placeholder="Search courses..." class="search-input">
+                        <button type="submit" class="search-submit" aria-label="Submit search">
+                            <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="my-courses-container">
+            <div class="my-courses-header">
+                <h1>My Learning Journey</h1>
+                <p>Track your progress and continue learning where you left off.</p>
+            </div>
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="courses-grid">
+                    @foreach (var userCourse in Model)
+                    {
+                        <div class="course-card">
+                            <div class="course-image">
+                                <img src="@userCourse.Course.ImageUrl" alt="@userCourse.Course.Title">
+                                <div class="course-progress">
+                                    <div class="progress-bar" style="width: @userCourse.CompletionPercentage%"></div>
+                                </div>
+                            </div>
+                            <div class="course-content">
+                                <h3 class="course-title">@userCourse.Course.Title</h3>
+
+                                <div class="course-meta">
+                                    <div>
+                                        <i class="fas fa-clock"></i> @userCourse.Course.DurationInWeeks Weeks
+                                    </div>
+                                    <div>
+                                        <i class="fas fa-book"></i> @userCourse.Course.LessonsCount Lessons
+                                    </div>
+                                </div>
+
+                                @if (userCourse.IsCompleted)
+                                {
+                                    <span class="course-status status-completed">
+                                        <i class="fas fa-check-circle"></i> Completed
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="course-status status-in-progress">
+                                        <i class="fas fa-spinner"></i> In Progress (@userCourse.CompletionPercentage.Value.ToString("0.0")%)
+                                    </span>
+                                }
+
+                                <a href="@userCourse.Course.ExternalUrl" class="continue-btn">
+                                    @(userCourse.IsCompleted ? "Review Course" : "Continue Learning")
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="empty-courses">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2>You haven't enrolled in any courses yet</h2>
+                    <p>Discover our wide range of courses and start your learning journey today!</p>
+                    <a href="@Url.Action("Index", "Course")" class="browse-btn">
+                        Browse Courses
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- BACK TO TOP -->
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <!-- SCRIPTS -->
+    <script src="~/js/edupro.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // User Dropdown Logic
+            const userDropdown = document.querySelector('.user-dropdown');
+            if (userDropdown) {
+                const toggleButton = userDropdown.querySelector('.user-dropdown-toggle');
+                const menu = userDropdown.querySelector('.user-dropdown-menu');
+                const arrow = userDropdown.querySelector('.dropdown-arrow');
+
+                toggleButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    menu.classList.toggle('show');
+                    arrow.classList.toggle('up');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!userDropdown.contains(e.target)) {
+                        menu.classList.remove('show');
+                        arrow.classList.remove('up');
+                    }
+                });
+            }
+
+            // Search Toggle Logic
+            const searchToggle = document.getElementById('searchToggle');
+            const searchContainer = document.getElementById('searchContainer');
+            if (searchToggle && searchContainer) {
+                searchToggle.addEventListener('click', function () {
+                    searchContainer.classList.toggle('active');
+                    this.classList.toggle('active');
+
+                    if (searchContainer.classList.contains('active')) {
+                        const searchInput = searchContainer.querySelector('.search-input');
+                        if (searchInput) {
+                            searchInput.focus();
+                        }
+                    }
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!searchContainer.contains(e.target) && !searchToggle.contains(e.target)) {
+                        searchContainer.classList.remove('active');
+                        searchToggle.classList.remove('active');
+                    }
+                });
+            }
+
+            // Mobile Nav Toggle Logic
+            const navTogglers = document.querySelectorAll("[data-nav-toggler]");
+            const navbar = document.querySelector("[data-navbar]");
+            const overlay = document.querySelector("[data-overlay]");
+
+            function toggleNav() {
+                navbar.classList.toggle("active");
+                overlay.classList.toggle("active");
+                document.body.classList.toggle("nav-active");
+            }
+
+            if (navTogglers) {
+                for (let i = 0; i < navTogglers.length; i++) {
+                    navTogglers[i].addEventListener("click", toggleNav);
+                }
+            }
+
+            // Header Active Logic
+            const header = document.querySelector("[data-header]");
+            const backTopBtn = document.querySelector("[data-back-top-btn]");
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY >= 100) {
+                    header.classList.add("active");
+                    if (backTopBtn) backTopBtn.classList.add("active");
+                } else {
+                    header.classList.remove("active");
+                    if (backTopBtn) backTopBtn.classList.remove("active");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

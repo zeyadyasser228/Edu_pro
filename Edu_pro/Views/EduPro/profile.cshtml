@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="~/images/logo.jpeg"
+      type="image/svg+xml"
+    />
+    <link rel="stylesheet" href="~/css/profile.css">
+
+    <title>Student Profile | EduPro</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+    
+    </style>
+  </head>
+  <body>
+    <div class="profile-container">
+      <div class="profile-header">
+        <div class="profile-picture">
+          <img
+            src="~/images/WhatsApp Image 2025-01-03 at 11.43.02 PM.jpeg"
+            alt="Profile Picture"
+            class="profile-img"
+          />
+          <button class="change-photo">
+            <i class="fas fa-camera"></i>
+          </button>
+        </div>
+        <div class="profile-info">
+          <h1>Zeyad yasser</h1>
+          <p>Computer Science Student</p>
+          <div class="profile-stats">
+            <div class="stat">
+              <div class="stat-value">4</div>
+              <div class="stat-label">Courses</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">85%</div>
+              <div class="stat-label">Avg. Score</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">12</div>
+              <div class="stat-label">Achievements</div>
+            </div>
+          </div>
+        </div>
+            <button class="edit-profile-btn" onclick="window.location.href='@Url.Action("EditProfile", "EduPro")'">
+                Edit Profile
+            </button>
+      </div>
+
+      <div class="profile-content">
+        <div class="courses-section">
+          <h2 class="section-title">Enrolled Courses</h2>
+          <div class="course-list">
+            <div class="course-item">
+              <div class="course-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <div class="course-info">
+                <h3>Introduction to Python</h3>
+                <div class="course-progress">
+                  <div class="progress-bar" style="width: 75%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="course-item">
+              <div class="course-icon">
+                <i class="fas fa-database"></i>
+              </div>
+              <div class="course-info">
+                <h3>Database Management</h3>
+                <div class="course-progress">
+                  <div class="progress-bar" style="width: 60%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="course-item">
+              <div class="course-icon">
+                <i class="fas fa-network-wired"></i>
+              </div>
+              <div class="course-info">
+                <h3>Computer Networks</h3>
+                <div class="course-progress">
+                  <div class="progress-bar" style="width: 40%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="achievements-section">
+          <h2 class="section-title">Recent Achievements</h2>
+          <div class="achievement-list">
+            <div class="achievement-item">
+              <div class="achievement-icon">
+                <i class="fas fa-trophy"></i>
+              </div>
+              <div class="achievement-info">
+                <h4>Python Master</h4>
+                <p>Completed all Python courses</p>
+              </div>
+            </div>
+            <div class="achievement-item">
+              <div class="achievement-icon">
+                <i class="fas fa-award"></i>
+              </div>
+              <div class="achievement-info">
+                <h4>Top Performer</h4>
+                <p>Ranked #1 in Database course</p>
+              </div>
+            </div>
+            <div class="achievement-item">
+              <div class="achievement-icon">
+                <i class="fas fa-medal"></i>
+              </div>
+              <div class="achievement-info">
+                <h4>Quick Learner</h4>
+                <p>Finished 3 courses in one month</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Animate progress bars on page load
+      window.addEventListener("load", () => {
+        const progressBars = document.querySelectorAll(".progress-bar");
+        progressBars.forEach((bar) => {
+          const width = bar.style.width;
+          bar.style.width = "0%";
+          setTimeout(() => {
+            bar.style.width = width;
+          }, 300);
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1183 @@
+@model List<EduPro.Models.CourseModel>
+@{
+    ViewData["Title"] = "Browse Courses";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Courses - EDU PRO</title>
+    <link rel="shortcut icon" href="~/images/logo.jpeg" type="image/svg+xml">
+    <link rel="stylesheet" href="~/css/edupro.css" />
+    <link rel="stylesheet" href="~/css/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <style>
+        /* User Dropdown Styles */
+        .user-dropdown {
+            position: relative;
+            margin-left: 15px;
+        }
+
+        .user-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--ff-poppins);
+            font-size: var(--fs-5);
+            color: var(--eerie-black-1);
+            padding: 5px 10px;
+            border-radius: var(--radius-5);
+            transition: background-color var(--transition-1);
+        }
+
+            .user-dropdown-toggle ion-icon {
+                font-size: 22px;
+            }
+
+            .user-dropdown-toggle .dropdown-arrow {
+                font-size: 16px;
+                transition: transform var(--transition-1);
+            }
+
+                .user-dropdown-toggle .dropdown-arrow.up {
+                    transform: rotate(180deg);
+                }
+
+            .user-dropdown-toggle:hover,
+            .user-dropdown-toggle:focus {
+                background-color: var(--platinum);
+                outline: none;
+            }
+
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background-color: var(--white);
+            border-radius: var(--radius-5);
+            box-shadow: var(--shadow-2);
+            min-width: 200px;
+            padding: 10px 0;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity var(--transition-2), visibility var(--transition-2), transform var(--transition-2);
+            border: 1px solid var(--light-gray);
+        }
+
+            .user-dropdown-menu.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+        .user-info-header {
+            padding: 10px 15px;
+            font-size: var(--fs-6);
+            color: var(--gray-web);
+            border-bottom: 1px solid var(--platinum);
+            margin-bottom: 5px;
+        }
+
+            .user-info-header strong {
+                color: var(--eerie-black-1);
+                font-weight: var(--fw-500);
+            }
+
+        .user-dropdown-menu a,
+        .user-dropdown-menu .logout-btn {
+            display: block;
+            padding: 10px 15px;
+            color: var(--eerie-black-1);
+            font-size: var(--fs-6);
+            text-decoration: none;
+            transition: background-color var(--transition-1), color var(--transition-1);
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-family: var(--ff-poppins);
+        }
+
+            .user-dropdown-menu a ion-icon,
+            .user-dropdown-menu .logout-btn ion-icon {
+                margin-right: 8px;
+                vertical-align: middle;
+                font-size: 18px;
+            }
+
+            .user-dropdown-menu a:hover,
+            .user-dropdown-menu .logout-btn:hover {
+                background-color: var(--kappel_15);
+                color: var(--kappel);
+            }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--platinum);
+            border: none;
+            margin: 5px 0;
+        }
+
+        .logout-form {
+            margin: 0;
+            padding: 0;
+        }
+
+        .user-dropdown-menu .logout-btn {
+            color: var(--radical-red);
+            font-weight: var(--fw-500);
+        }
+
+            .user-dropdown-menu .logout-btn:hover {
+                color: var(--white);
+                background-color: var(--radical-red);
+            }
+
+        /* Custom styles to match edupro.cshtml green theme */
+        :root {
+            --kappel: hsl(134, 75%, 41%); /* Main green color from edupro.css */
+            --kappel_15: hsla(134, 75%, 41%, 0.15);
+            --kappel-hover: hsla(134, 80%, 27%, 0.85);
+        }
+
+        /* Enhanced Course card styling */
+        .course-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background-color: var(--white);
+            border-radius: var(--radius-10);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+            .course-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            }
+
+        .course-image {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+        }
+
+            .course-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+        .course-card:hover .course-image img {
+            transform: scale(1.05);
+        }
+
+        .course-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        .course-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .course-category {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background-color: var(--kappel_15);
+            color: var(--kappel);
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .course-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #f39c12;
+            font-weight: 500;
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            color: var(--eerie-black-1);
+            font-weight: 600;
+            height: 2.8em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .course-description {
+            color: var(--gray-web);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            height: 4em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .course-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.85rem;
+            color: var(--gray-web);
+        }
+
+            .course-meta div {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .course-meta i {
+                color: var(--kappel);
+                font-size: 1rem;
+            }
+
+        .course-footer {
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Enhanced buttons */
+        .btn-primary {
+            background-color: var(--kappel);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius-5);
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .btn-primary:hover {
+                background-color: var(--kappel-hover);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .btn-primary:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--kappel);
+            border: 1px solid var(--kappel);
+            border-radius: var(--radius-5);
+            padding: 10px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+            .btn-secondary:hover {
+                background-color: var(--kappel_15);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            }
+
+            .btn-secondary:active {
+                transform: translateY(0);
+                box-shadow: none;
+            }
+
+        .btn-outline:hover {
+            border-color: var(--kappel);
+            color: var(--kappel);
+            background-color: var(--kappel_15);
+        }
+
+        /* Enhanced pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 60px;
+            gap: 15px;
+        }
+
+            .pagination a {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px 20px;
+                background-color: var(--white);
+                color: var(--eerie-black-1);
+                border-radius: var(--radius-5);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+                font-weight: 500;
+            }
+
+                .pagination a:hover:not(.disabled) {
+                    background-color: var(--kappel_15);
+                    color: var(--kappel);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                .pagination a.active {
+                    background-color: var(--kappel);
+                    color: var(--white);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                }
+
+                .pagination a.disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                    box-shadow: none;
+                }
+
+        #page-numbers {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--white);
+            padding: 10px 20px;
+            border-radius: var(--radius-5);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            font-weight: 500;
+        }
+
+        /* Enhanced course badge */
+        .course-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--white);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            z-index: 1;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(2px);
+        }
+
+        /* Enhanced add to cart button */
+        .add-to-cart-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--kappel);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: var(--radius-5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .add-to-cart-btn:hover {
+                background-color: var(--kappel-hover);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .add-to-cart-btn:active {
+                transform: translateY(0);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            .add-to-cart-btn i {
+                font-size: 1rem;
+            }
+
+        /* Enhanced hero section */
+        .courses-hero {
+            background-color: var(--kappel);
+            color: var(--white);
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .courses-hero::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+                z-index: 1;
+            }
+
+            .courses-hero .container {
+                position: relative;
+                z-index: 2;
+            }
+
+            .courses-hero h1 {
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 15px;
+                letter-spacing: -0.5px;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .courses-hero p {
+                font-size: 1.1rem;
+                max-width: 600px;
+                margin: 0 auto;
+                opacity: 0.9;
+            }
+
+        /* Enhanced price display */
+        .course-price {
+            color: var(--kappel);
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        /* Enhanced filter section */
+        .filter-section {
+            padding: 30px 0;
+            background-color: #f9f9f9;
+            border-bottom: 1px solid #eee;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            flex: 1 1 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+            .filter-group label {
+                font-weight: 500;
+                color: var(--eerie-black-1);
+                font-size: 0.9rem;
+            }
+
+            .filter-group select {
+                padding: 10px 15px;
+                border: 1px solid #ddd;
+                border-radius: var(--radius-5);
+                background-color: white;
+                font-family: var(--ff-poppins);
+                color: var(--eerie-black-1);
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+            }
+
+                .filter-group select:focus {
+                    border-color: var(--kappel);
+                    box-shadow: 0 0 0 3px var(--kappel_15);
+                    outline: none;
+                }
+
+            .filter-group button {
+                padding: 12px 20px;
+                margin-top: 8px;
+            }
+
+        /* Enhanced search container */
+        .search-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+            .search-container.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+        .search-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-5);
+            font-family: var(--ff-poppins);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .search-input:focus {
+                border-color: var(--kappel);
+                box-shadow: 0 0 0 3px var(--kappel_15);
+                outline: none;
+            }
+
+        .search-submit {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-web);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+            .search-submit:hover {
+                color: var(--kappel);
+            }
+
+        /* Enhanced no courses message */
+        .no-courses {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: #f9f9f9;
+            border-radius: var(--radius-10);
+            margin: 40px 0;
+        }
+
+            .no-courses h3 {
+                font-size: 1.5rem;
+                color: var(--eerie-black-1);
+                margin-bottom: 15px;
+            }
+
+            .no-courses p {
+                color: var(--gray-web);
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+        /* Enhanced courses container layout */
+        .courses-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 992px) {
+            .courses-container
+
+        {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .courses-hero h1 {
+            font-size: 2rem;
+        }
+
+        }
+
+        @@media (max-width: 768px) {
+            .filters
+
+        {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .filter-group {
+            flex: 1 1 100%;
+        }
+
+        .courses-hero {
+            padding: 60px 0;
+        }
+
+        }
+
+        @@media (max-width: 576px) {
+            .course-footer
+
+        {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .course-actions {
+            width: 100%;
+            flex-direction: column;
+        }
+
+            .add-to-cart-btn,
+            .course-actions .btn {
+                width: 100%;
+            }
+
+        .pagination {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #page-numbers {
+            order: -1;
+            margin-bottom: 10px;
+        }
+
+        }
+    </style>
+</head>
+<body id="top">
+    <!-- HEADER -->
+    <header class="header" data-header>
+        <div class="container">
+            <a asp-controller="EduPro" asp-action="Index" class="logo">
+                <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+            </a>
+
+            <nav class="navbar" data-navbar>
+                <div class="wrapper">
+                    <a asp-controller="EduPro" asp-action="Index" class="logo">
+                        <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+                    </a>
+                    <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+                        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+
+                <ul class="navbar-list">
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" class="navbar-link" data-nav-link>Home</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" asp-fragment="about" class="navbar-link" data-nav-link>About</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="Course" asp-action="Index" class="navbar-link" data-nav-link>Courses</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" asp-fragment="footer" class="navbar-link" data-nav-link>Contact Us</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Header Actions: Search, Cart, Auth -->
+            <div class="header-actions">
+                <button class="header-action-btn search-toggle" aria-label="toggle search" title="Search" id="searchToggle">
+                    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                </button>
+                <a asp-controller="Cart" asp-action="Index" class="header-action-btn" aria-label="cart" title="Shopping Cart">
+                    <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
+                    <span class="btn-badge">2</span>
+                </a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <!-- User Dropdown - Shown when logged in -->
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-toggle" aria-label="User menu" title="User Menu">
+                            <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+                            <span>@User.Identity.Name</span>
+                            <ion-icon name="chevron-down-outline" class="dropdown-arrow" aria-hidden="true"></ion-icon>
+                        </button>
+                        <div class="user-dropdown-menu">
+                            <div class="user-info-header">
+                                Signed in as <br><strong>@User.Identity.Name</strong>
+                            </div>
+                            <a asp-controller="EduPro" asp-action="MyCourses">
+                                <ion-icon name="book-outline" aria-hidden="true"></ion-icon>
+                                My Courses
+                            </a>
+                            <a asp-controller="EduPro" asp-action="Settings">
+                                <ion-icon name="settings-outline" aria-hidden="true"></ion-icon>
+                                Settings
+                            </a>
+                            <hr class="dropdown-divider">
+                            <form asp-controller="Auth" asp-action="Logout" method="post" class="logout-form">
+                                <button type="submit" class="logout-btn">
+                                    <ion-icon name="log-out-outline" aria-hidden="true"></ion-icon>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- Sign Up Button - Shown when not logged in -->
+                    <a class="btn has-before" asp-controller="Auth" asp-action="Signup">
+                        <span class="span">Sign Up</span>
+                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                    </a>
+                }
+            </div>
+
+            <!-- Mobile Nav Overlay -->
+            <div class="overlay" data-nav-toggler data-overlay></div>
+
+            <!-- Search Container -->
+            <div class="search-container" id="searchContainer">
+                <div class="search-wrapper">
+                    <form asp-controller="Course" asp-action="Search" method="get">
+                        <input type="text" name="searchTerm" placeholder="Search courses..." class="search-input" value="@ViewBag.SearchTerm">
+                        <button type="submit" class="search-submit" aria-label="Submit search">
+                            <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- COURSES HERO SECTION -->
+    <section class="courses-hero">
+        <div class="container">
+            <h1>Browse Our Courses</h1>
+            <p>Discover a wide range of courses to enhance your skills and knowledge</p>
+        </div>
+    </section>
+
+    <!-- FILTER SECTION -->
+    <section class="filter-section">
+        <div class="container">
+            <form asp-controller="Course" asp-action="Filter" method="get" class="filters">
+                <div class="filter-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category">
+                        <option value="all" selected="@(ViewBag.Category == null || ViewBag.Category == "all")">All Categories</option>
+                        <option value="Programming" selected="@(ViewBag.Category == "Programming")">Programming</option>
+                        <option value="Design" selected="@(ViewBag.Category == "Design")">Design</option>
+                        <option value="Marketing" selected="@(ViewBag.Category == "Marketing")">Marketing</option>
+                        <option value="Business" selected="@(ViewBag.Category == "Business")">Business</option>
+                        <option value="Data Science" selected="@(ViewBag.Category == "Data Science")">Data Science</option>
+                        <option value="Personal Development" selected="@(ViewBag.Category == "Personal Development")">Personal Development</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="level">Level</label>
+                    <select id="level" name="level">
+                        <option value="all" selected="@(ViewBag.Level == null || ViewBag.Level == "all")">All Levels</option>
+                        <option value="Beginner" selected="@(ViewBag.Level == "Beginner")">Beginner</option>
+                        <option value="Intermediate" selected="@(ViewBag.Level == "Intermediate")">Intermediate</option>
+                        <option value="Advanced" selected="@(ViewBag.Level == "Advanced")">Advanced</option>
+                        <option value="All Levels" selected="@(ViewBag.Level == "All Levels")">All Levels</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="duration">Duration</label>
+                    <select id="duration" name="duration">
+                        <option value="all" selected="@(ViewBag.Duration == null || ViewBag.Duration == "all")">Any Duration</option>
+                        <option value="short" selected="@(ViewBag.Duration == "short")">1-4 Weeks</option>
+                        <option value="medium" selected="@(ViewBag.Duration == "medium")">5-8 Weeks</option>
+                        <option value="long" selected="@(ViewBag.Duration == "long")">9+ Weeks</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <button type="submit" class="btn btn-primary">
+                        <ion-icon name="filter-outline"></ion-icon>
+                        Apply Filters
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- COURSES GRID -->
+    <section class="courses-grid">
+        <div class="container">
+            @if (Model != null && Model.Any())
+            {
+                <div class="courses-container" id="courses-container">
+                    @foreach (var course in Model)
+                    {
+                        <div class="course-card">
+                            <div class="course-image">
+                                <img src="@course.ImageUrl" alt="@course.Title">
+                                <div class="course-badge">@course.Level</div>
+                            </div>
+                            <div class="course-content">
+                                <div class="course-info">
+                                    <span class="course-category">@course.Category</span>
+                                    <span class="course-rating">
+                                        <i class="fas fa-star"></i> @course.Rating.ToString("0.0")
+                                    </span>
+                                </div>
+                                <h3 class="course-title">@course.Title</h3>
+                                <p class="course-description">@course.Description.Substring(0, Math.Min(100, course.Description.Length))...</p>
+                                <div class="course-meta">
+                                    <div class="course-duration">
+                                        <i class="fas fa-clock"></i> @course.DurationInWeeks Weeks
+                                    </div>
+                                    <div class="course-lessons">
+                                        <i class="fas fa-book"></i> @course.LessonsCount Lessons
+                                    </div>
+                                    <div class="course-students">
+                                        <i class="fas fa-users"></i> @course.StudentsEnrolled Students
+                                    </div>
+                                </div>
+                                <div class="course-footer">
+                                    <div class="course-price">$@course.Price.ToString("0.00")</div>
+                                    <div class="course-actions">
+                                        <form asp-controller="Cart" asp-action="AddToCart" method="post" style="display: inline;">
+                                            <input type="hidden" name="courseId" value="@course.Id" />
+                                            <button type="submit" class="add-to-cart-btn">
+                                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                                            </button>
+                                        </form>
+                                        <a asp-controller="Course" asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+                    <a href="@Url.Action(ViewContext.RouteData.Values["action"].ToString(),
+                        new {
+                            page = Math.Max(1, ViewBag.CurrentPage - 1),
+                            category = ViewBag.Category,
+                            level = ViewBag.Level,
+                            duration = ViewBag.Duration,
+                            searchTerm = ViewBag.SearchTerm
+                        })"
+                       class="@(ViewBag.CurrentPage <= 1 ? "disabled" : "")">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </a>
+
+                    <div id="page-numbers">
+                        <span>Page @ViewBag.CurrentPage of @ViewBag.TotalPages</span>
+                    </div>
+
+                    <a href="@Url.Action(ViewContext.RouteData.Values["action"].ToString(),
+                        new {
+                            page = Math.Min(ViewBag.TotalPages, ViewBag.CurrentPage + 1),
+                            category = ViewBag.Category,
+                            level = ViewBag.Level,
+                            duration = ViewBag.Duration,
+                            searchTerm = ViewBag.SearchTerm
+                        })"
+                       class="@(ViewBag.CurrentPage >= ViewBag.TotalPages ? "disabled" : "")">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="no-courses">
+                    <h3>No courses found matching your criteria</h3>
+                    <p>Try adjusting your filters or search term to find more courses.</p>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <div class="footer-top section">
+            <div class="container grid-list">
+                <div class="footer-brand">
+                    <p class="footer-brand-text">
+                        Connecting learners worldwide.
+                    </p>
+                    <div class="wrapper">
+                        <span class="span">Add:</span>
+                        <address class="address">70-80 Upper St Norwich NR2</address>
+                    </div>
+                    <div class="wrapper">
+                        <span class="span">Call:</span>
+                        <a href="tel:+011234567890" class="footer-link">+01 123 4567 890</a>
+                    </div>
+                    <div class="wrapper">
+                        <span class="span">Email:</span>
+                        <a href="mailto:info@edupro.com" class="footer-link">info@edupro.com</a>
+                    </div>
+                </div>
+
+                <ul class="footer-list">
+                    <li>
+                        <p class="footer-list-title">Online Platform</p>
+                    </li>
+                    <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="about" class="footer-link">About</a></li>
+                    <li><a asp-controller="Course" asp-action="Index" class="footer-link">Courses</a></li>
+                    <li><a href="#" class="footer-link">Instructor</a></li>
+                    <li><a href="#" class="footer-link">Events</a></li>
+                    <li><a href="#" class="footer-link">Instructor Profile</a></li>
+                    <li><a href="#" class="footer-link">Purchase Guide</a></li>
+                </ul>
+
+                <ul class="footer-list">
+                    <li>
+                        <p class="footer-list-title">Links</p>
+                    </li>
+                    <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="footer" class="footer-link">Contact Us</a></li>
+                    <li><a href="#" class="footer-link">Gallery</a></li>
+                    <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="blog" class="footer-link">News & Articles</a></li>
+                    <li><a href="#" class="footer-link">FAQ's</a></li>
+                    <li><a asp-controller="Auth" asp-action="Login" class="footer-link">Sign In/Registration</a></li>
+                    <li><a href="#" class="footer-link">Coming Soon</a></li>
+                </ul>
+
+                <div class="footer-list">
+                    <p class="footer-list-title">Newsletter</p>
+                    <p class="footer-list-text">
+                        Enter your email address to register for our newsletter subscription
+                    </p>
+                    <form action="" class="newsletter-form">
+                        <input type="email" name="email_address" placeholder="Your email" required class="input-field">
+                        <button type="submit" class="btn has-before">
+                            <span class="span">Subscribe</span>
+                            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                        </button>
+                    </form>
+                    <ul class="social-list">
+                        <li><a href="#" class="social-link"><ion-icon name="logo-facebook"></ion-icon></a></li>
+                        <li><a href="#" class="social-link"><ion-icon name="logo-linkedin"></ion-icon></a></li>
+                        <li><a href="#" class="social-link"><ion-icon name="logo-instagram"></ion-icon></a></li>
+                        <li><a href="#" class="social-link"><ion-icon name="logo-twitter"></ion-icon></a></li>
+                        <li><a href="#" class="social-link"><ion-icon name="logo-youtube"></ion-icon></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="copyright">
+                    Copyright &copy; @DateTime.Now.Year All Rights Reserved by <a href="#" class="copyright-link">EduPro</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BACK TO TOP -->
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <!-- SCRIPTS -->
+    <script src="~/js/edupro.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // User Dropdown Logic
+            const userDropdown = document.querySelector('.user-dropdown');
+            if (userDropdown) {
+                const toggleButton = userDropdown.querySelector('.user-dropdown-toggle');
+                const menu = userDropdown.querySelector('.user-dropdown-menu');
+                const arrow = userDropdown.querySelector('.dropdown-arrow');
+
+                toggleButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    menu.classList.toggle('show');
+                    arrow.classList.toggle('up');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!userDropdown.contains(e.target)) {
+                        menu.classList.remove('show');
+                        arrow.classList.remove('up');
+                    }
+                });
+            }
+
+            // Search Toggle Logic
+            const searchToggle = document.getElementById('searchToggle');
+            const searchContainer = document.getElementById('searchContainer');
+            if (searchToggle && searchContainer) {
+                searchToggle.addEventListener('click', function () {
+                    searchContainer.classList.toggle('active');
+                    this.classList.toggle('active');
+
+                    if (searchContainer.classList.contains('active')) {
+                        const searchInput = searchContainer.querySelector('.search-input');
+                        if (searchInput) {
+                            searchInput.focus();
+                        }
+                    }
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!searchContainer.contains(e.target) && !searchToggle.contains(e.target)) {
+                        searchContainer.classList.remove('active');
+                        searchToggle.classList.remove('active');
+                    }
+                });
+            }
+
+            // Mobile Nav Toggle Logic
+            const navTogglers = document.querySelectorAll("[data-nav-toggler]");
+            const navbar = document.querySelector("[data-navbar]");
+            const overlay = document.querySelector("[data-overlay]");
+
+            function toggleNav() {
+                navbar.classList.toggle("active");
+                overlay.classList.toggle("active");
+                document.body.classList.toggle("nav-active");
+            }
+
+            if (navTogglers) {
+                for (let i = 0; i < navTogglers.length; i++) {
+                    navTogglers[i].addEventListener("click", toggleNav);
+                }
+            }
+
+            // Header Active Logic
+            const header = document.querySelector("[data-header]");
+            const backTopBtn = document.querySelector("[data-back-top-btn]");
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY >= 100) {
+                    header.classList.add("active");
+                    if (backTopBtn) backTopBtn.classList.add("active");
+                } else {
+                    header.classList.remove("active");
+                    if (backTopBtn) backTopBtn.classList.remove("active");
+                }
+            });
+
+            // Disable previous/next buttons if they have the disabled class
+            const paginationLinks = document.querySelectorAll('.pagination a');
+            if (paginationLinks) {
+                paginationLinks.forEach(link => {
+                    if (link.classList.contains('disabled')) {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            return false;
+                        });
+                    }
+                });
+            }
+        });
+
+        // Enhanced add to cart function
+        function addToCart(courseId) {
+            // Show loading effect on button
+            const button = event.currentTarget;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+            button.disabled = true;
+
+            fetch('/api/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ courseId: courseId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok');
+            })
+            .then(data => {
+                // Update cart count in UI
+                const cartBadge = document.querySelector('.btn-badge');
+                if (cartBadge) {
+                    cartBadge.textContent = data.cartCount;
+                    // Make the badge pulse
+                    cartBadge.classList.add('pulse');
+                    setTimeout(() => cartBadge.classList.remove('pulse'), 1000);
+                }
+
+                // Show success feedback
+                button.innerHTML = '<i class="fas fa-check"></i> Added';
+                button.style.backgroundColor = '#28a745';
+
+                // Reset button after delay
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.backgroundColor = '';
+                    button.disabled = false;
+                }, 2000);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Failed';
+                button.style.backgroundColor = '#dc3545';
+
+                // Reset button after delay
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.style.backgroundColor = '';
+                    button.disabled = false;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Green Modern Dashboard with To-Do List</title>
+    <link rel="stylesheet" href="~/css/dashboard.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      
+      
+      
+    </style>
+  </head>
+  <body>
+    <div class="dashboard">
+      <div class="sidebar">
+        <div class="profile">
+          <img
+            src="~/images/WhatsApp Image 2025-01-03 at 11.43.02 PM.jpeg"
+            alt="Profile Picture"
+            class="profile-pic"
+          />
+          <h2 class="profile-name">zeyad yasser</h2>
+        </div>
+        <nav>
+          <button class="nav-btn active" data-tab="courses">
+            <i class="fas fa-book"></i> My Courses
+          </button>
+          <button class="nav-btn" data-tab="assignments">
+            <i class="fas fa-tasks"></i> Assignments
+          </button>
+          <button class="nav-btn" data-tab="grades">
+            <i class="fas fa-chart-bar"></i> Grades
+          </button>
+          <button class="nav-btn" data-tab="todo">
+            <i class="fas fa-list"></i> To-Do List
+          </button>
+        </nav>
+      </div>
+
+      <div class="content">
+        <header class="dashboard-header">
+          <h1 class="dashboard-title">Dashboard Overview</h1>
+          <div id="date-time"></div>
+        </header>
+
+        <section id="courses" class="tab">
+          <div class="card-container">
+            <div class="card">
+              <h3>Course 1</h3>
+              <p>Course details...</p>
+            </div>
+            <div class="card">
+              <h3>Course 2</h3>
+              <p>Course details...</p>
+            </div>
+            <div class="card">
+              <h3>Course 3</h3>
+              <p>Course details...</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="assignments" class="tab hidden">
+          <div class="card-container">
+            <div class="card">
+              <h3>Assignment 1</h3>
+              <p>Details about assignment 1...</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="grades" class="tab hidden">
+          <div class="card-container">
+            <div class="card">
+              <h3>Grade Report</h3>
+              <p>Your current grade: A+</p>
+              <div class="progress-bar" style="width: 90%"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="todo" class="tab hidden">
+          <div class="todo-list">
+            <h3>To-Do List</h3>
+            <form class="todo-form" id="todo-form">
+              <input
+                type="text"
+                id="todo-input"
+                class="todo-input"
+                placeholder="Add a task..."
+              />
+              <button type="submit" class="todo-submit">Add</button>
+            </form>
+            <ul id="todo-items" class="todo-items"></ul>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="fab"><i class="fas fa-plus"></i></div>
+
+    <script>
+      document.querySelectorAll(".nav-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          document
+            .querySelectorAll(".nav-btn")
+            .forEach((btn) => btn.classList.remove("active"));
+          button.classList.add("active");
+          const tabId = button.getAttribute("data-tab");
+          document
+            .querySelectorAll(".tab")
+            .forEach((tab) => tab.classList.add("hidden"));
+          document.getElementById(tabId).classList.remove("hidden");
+        });
+      });
+
+      const dateTimeElement = document.getElementById("date-time");
+      const updateDateTime = () => {
+        const now = new Date();
+        const dateString = now.toLocaleDateString();
+        const timeString = now.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        dateTimeElement.textContent = `${dateString} ${timeString}`;
+      };
+      setInterval(updateDateTime, 1000);
+      updateDateTime();
+
+      const todoForm = document.getElementById("todo-form");
+      const todoInput = document.getElementById("todo-input");
+      const todoItems = document.getElementById("todo-items");
+
+      todoForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const taskText = todoInput.value.trim();
+        if (taskText === "") return;
+        addTodoItem(taskText);
+        todoInput.value = "";
+      });
+
+      function addTodoItem(taskText) {
+        const listItem = document.createElement("li");
+        listItem.className = "todo-item";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "todo-checkbox";
+
+        const taskSpan = document.createElement("span");
+        taskSpan.className = "todo-text";
+        taskSpan.textContent = taskText;
+
+        const deleteBtn = document.createElement("i");
+        deleteBtn.className = "fas fa-trash todo-delete";
+        deleteBtn.addEventListener("click", () => listItem.remove());
+
+        checkbox.addEventListener("change", () => {
+          if (checkbox.checked) {
+            taskSpan.classList.add("completed");
+          } else {
+            taskSpan.classList.remove("completed");
+          }
+        });
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(taskSpan);
+        listItem.appendChild(deleteBtn);
+        todoItems.appendChild(listItem);
+      }
+    </script>
+  </body>
+</html>

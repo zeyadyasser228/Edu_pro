@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="~/css/edupro.css">
+
+    <title>EduWeb - The Best Program to Enroll for Exchange</title>
+    <meta name="title" content="Edu - Learn Without Limits, Exchange Without Borders!">
+    <meta name="description" content="This is an education html template.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="@Url.Content("~/images/logo.jpeg")" type="image/x-icon"> <!-- Corrected type -->
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap"
+          rel="stylesheet">
+
+    <style>
+        /*-----------------------------------*\
+                    #USER DROPDOWN
+                \*-----------------------------------*/
+
+        .user-dropdown {
+            position: relative; /* Needed for absolute positioning of the menu */
+            margin-left: 15px; /* Adjust spacing as needed */
+        }
+
+        .user-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--ff-poppins); /* Match other text */
+            font-size: var(--fs-5); /* Adjust size as needed */
+            color: var(--eerie-black-1);
+            padding: 5px 10px;
+            border-radius: var(--radius-5);
+            transition: background-color var(--transition-1);
+        }
+
+            .user-dropdown-toggle ion-icon {
+                font-size: 22px; /* Adjust icon size */
+            }
+
+            .user-dropdown-toggle .dropdown-arrow {
+                font-size: 16px; /* Smaller arrow */
+                transition: transform var(--transition-1); /* Smooth arrow rotation */
+            }
+
+                .user-dropdown-toggle .dropdown-arrow.up {
+                    transform: rotate(180deg); /* Point arrow up when open */
+                }
+
+            .user-dropdown-toggle:hover,
+            .user-dropdown-toggle:focus {
+                background-color: var(--platinum); /* Subtle hover effect */
+                outline: none; /* Remove default focus outline if needed */
+            }
+
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px); /* Position below the toggle with some gap */
+            right: 0; /* Align to the right */
+            background-color: var(--white);
+            border-radius: var(--radius-5);
+            box-shadow: var(--shadow-2);
+            min-width: 200px; /* Adjust width as needed */
+            padding: 10px 0;
+            z-index: 1001; /* Ensure it's above other header elements */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity var(--transition-2), visibility var(--transition-2), transform var(--transition-2);
+            border: 1px solid var(--light-gray); /* Optional border */
+        }
+
+            .user-dropdown-menu.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+        .user-info-header {
+            padding: 10px 15px;
+            font-size: var(--fs-6);
+            color: var(--gray-web);
+            border-bottom: 1px solid var(--platinum);
+            margin-bottom: 5px;
+        }
+
+            .user-info-header strong {
+                color: var(--eerie-black-1);
+                font-weight: var(--fw-500);
+            }
+
+        .user-dropdown-menu a,
+        .user-dropdown-menu .logout-btn {
+            display: block;
+            padding: 10px 15px;
+            color: var(--eerie-black-1);
+            font-size: var(--fs-6);
+            text-decoration: none;
+            transition: background-color var(--transition-1), color var(--transition-1);
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-family: var(--ff-poppins); /* Ensure font consistency */
+        }
+
+            .user-dropdown-menu a ion-icon,
+            .user-dropdown-menu .logout-btn ion-icon {
+                margin-right: 8px;
+                vertical-align: middle; /* Align icon better with text */
+                font-size: 18px;
+            }
+
+            .user-dropdown-menu a:hover,
+            .user-dropdown-menu .logout-btn:hover {
+                background-color: var(--kappel_15);
+                color: var(--kappel);
+            }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--platinum);
+            border: none;
+            margin: 5px 0;
+        }
+
+        .logout-form {
+            margin: 0; /* Reset form margin */
+            padding: 0; /* Reset form padding */
+        }
+
+        .user-dropdown-menu .logout-btn {
+            color: var(--radical-red); /* Make logout visually distinct */
+            font-weight: var(--fw-500);
+        }
+
+            .user-dropdown-menu .logout-btn:hover {
+                color: var(--white);
+                background-color: var(--radical-red);
+            }
+
+        /* Responsive styles for dropdown */
+        @@media (max-width: 991px) {
+            .header-actions
+
+        {
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .user-dropdown-menu {
+            left: auto;
+            right: 0;
+            min-width: 250px;
+        }
+
+        }
+
+        @@media (max-width: 768px) {
+            .user-dropdown
+
+        {
+            margin-left: 5px;
+        }
+
+        .user-dropdown-toggle {
+            padding: 3px 6px;
+        }
+
+            .user-dropdown-toggle span {
+                display: none; /* Hide username text on mobile */
+            }
+
+        .user-dropdown-menu {
+            min-width: 200px;
+            right: -10px;
+        }
+
+        }
+
+        @@media (max-width: 576px) {
+            .user-dropdown-menu
+
+        {
+            right: -50px;
+            min-width: 200px;
+        }
+
+        }
+    </style>
+
+</head>
+
+<body id="top">
+
+    <!--
+      - #HEADER
+    -->
+    <header class="header" data-header>
+        <div class="container">
+
+            <a asp-action="Index" class="logo">
+                <!-- Changed href="#" to asp-action -->
+                <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+            </a>
+
+            <nav class="navbar" data-navbar>
+                <div class="wrapper">
+                    <a asp-action="Index" class="logo">
+                        <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+                    </a>
+                    <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+                        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+
+                <ul class="navbar-list">
+                    <li class="navbar-item">
+                        <a asp-action="Index" class="navbar-link" data-nav-link>Home</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a href="#about" class="navbar-link" data-nav-link>About</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a href="#courses" class="navbar-link" data-nav-link>Courses</a>
+                    </li>
+                    @* <li class="navbar-item"> *@
+                    @*     <a asp-action="profile" class="navbar-link" data-nav-link>Profile</a> *@
+                    @* </li> *@
+                    <li class="navbar-item">
+                        <a href="#footer" class="navbar-link" data-nav-link>Contact Us</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Header Actions: Search, Cart, Auth -->
+            <div class="header-actions">
+                <button class="header-action-btn search-toggle" aria-label="toggle search" title="Search" id="searchToggle">
+                    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                </button>
+
+                <a asp-controller="Cart" asp-action="Index" class="header-action-btn" aria-label="cart" title="Shopping Cart">
+                    <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
+                    <span class="btn-badge">@(Model?.Items?.Count ?? 0)</span>
+                </a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <!-- User Dropdown - Shown when logged in -->
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-toggle" aria-label="User menu" title="User Menu">
+                            <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+                            <span>@User.Identity.Name</span>
+                            <ion-icon name="chevron-down-outline" class="dropdown-arrow" aria-hidden="true"></ion-icon>
+                        </button>
+                        <div class="user-dropdown-menu">
+                            <div class="user-info-header">
+                                Signed in as <br><strong>@User.Identity.Name</strong>
+                            </div>
+                            <a asp-controller="Courses" asp-action="MyCourses">
+                                <ion-icon name="book-outline" aria-hidden="true"></ion-icon>
+                                My Courses
+                            </a>
+                            <a asp-controller="EduPro" asp-action="Settings">
+                                <!-- Action needs to exist -->
+                                <ion-icon name="settings-outline" aria-hidden="true"></ion-icon>
+                                Settings
+                            </a>
+                            <hr class="dropdown-divider">
+                            <form asp-controller="Auth" asp-action="Logout" method="post" class="logout-form">
+                                <button type="submit" class="logout-btn">
+                                    <ion-icon name="log-out-outline" aria-hidden="true"></ion-icon>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- Sign Up / Login Buttons - Shown when not logged in -->
+                    <a class="btn has-before" asp-controller="Auth" asp-action="Signup">
+                        <span class="span">Sign Up</span>
+                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                    </a>
+
+                }
+
+            </div>
+
+            <!-- Mobile Nav Overlay -->
+            <div class="overlay" data-nav-toggler data-overlay></div>
+
+            <!-- Search Container -->
+            <div class="search-container" id="searchContainer">
+                <div class="search-wrapper">
+                    <input type="text" placeholder="Search..." class="search-input">
+                    <button class="search-submit" aria-label="Submit search">
+                        <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main>
+        <article>
+
+            <!--
+              - #HERO
+            -->
+            <section class="section hero has-bg-image" id="home" aria-label="home"
+                     style="background-image: url('https://raw.githubusercontent.com/codewithsadee/eduweb/e95ce3bd395db274166c4d8abe7970b699a4c39d/assets/images/hero-bg.svg')">
+                <!-- Corrected image path if needed -->
+                <div class="container">
+                    <div class="hero-content">
+                        <h1 class="h1 section-title">
+                            The Smartest Way to <span class="span">Learn</span> & Exchange
+                        </h1>
+                        <p class="hero-text">
+                            Step into the future of learning with innovation and excellence.
+                        </p>
+                        <a href="#courses" class="btn has-before">
+                            <!-- Corrected spelling 'herf' to 'href' -->
+                            <span class="span">Find courses</span>
+                            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                        </a>
+                    </div>
+                    <figure class="hero-banner">
+                        <div class="img-holder one" style="--width: 270; --height: 300;">
+                            <img src="~/images/blue_boy.jpg" width="270" height="300" alt="Student learning online" class="img-cover">
+                        </div>
+                        <div class="img-holder two" style="--width: 240; --height: 370;">
+                            <img src="~/images/green_girl.jpg" width="240" height="370" alt="Student participating in class" class="img-cover">
+                        </div>
+                        <!-- Shapes (optional, ensure paths are correct) -->
+                        <img src="https://raw.githubusercontent.com/codewithsadee/eduweb/e95ce3bd395db274166c4d8abe7970b699a4c39d/assets/images/hero-shape-1.svg" width="380" height="190" alt="" class="shape hero-shape-1">
+                        <img src="https://raw.githubusercontent.com/codewithsadee/eduweb/e95ce3bd395db274166c4d8abe7970b699a4c39d/assets/images/hero-shape-2.png" width="622" height="551" alt="" class="shape hero-shape-2">
+                    </figure>
+                </div>
+            </section>
+
+            <div class="section-separator"></div>
+
+            <!--
+              - #ABOUT
+            -->
+            <section class="section about" id="about" aria-label="about">
+                <div class="container">
+                    <figure class="about-banner">
+                        <div class="img-holder" style="--width: 520; --height: 370;">
+                            <img src="~/images/1848189231680acbb4598e6a5012b208.jpg" width="520" height="370" loading="lazy" alt="About EduWeb banner" class="img-cover">
+                        </div>
+                        <!-- Shapes (ensure paths are correct) -->
+                        <img src="https://raw.githubusercontent.com/codewithsadee/eduweb/e95ce3bd395db274166c4d8abe7970b699a4c39d/assets/images/about-shape-1.svg" width="150" height="150" loading="lazy" alt="" class="shape about-shape-1">
+                        <img src="https://raw.githubusercontent.com/codewithsadee/eduweb/e95ce3bd395db274166c4d8abe7970b699a4c39d/assets/images/about-shape-2.svg" width="371" height="220" loading="lazy" alt="" class="shape about-shape-2">
+                        <img src="https://github.com/codewithsadee/eduweb/blob/master/assets/images/about-shape-3.png?raw=true" width="722" height="528" loading="lazy" alt="" class="shape about-shape-3">
+                    </figure>
+                    <div class="about-content">
+                        <p class="section-subtitle">About Us</p>
+                        <h2 class="h2 section-title">
+                            Over 10 Years in <span class="span">Distant learning</span> for Skill Development
+                        </h2>
+                        <p class="section-text">
+                            <!-- Add some descriptive text about your platform here -->
+                            EduWeb provides high-quality online courses and exchange opportunities, connecting learners and educators globally.
+                        </p>
+                        <ul class="about-list">
+                            <li class="about-item">
+                                <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
+                                <span class="span">Expert Trainers</span>
+                            </li>
+                            <li class="about-item">
+                                <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
+                                <span class="span">Online Remote Learning</span>
+                            </li>
+                            <li class="about-item">
+                                <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
+                                <span class="span">Lifetime Access</span>
+                            </li>
+                        </ul>
+                        <img src="https://raw.githubusercontent.com/codewithsadee/eduweb/e95ce3bd395db274166c4d8abe7970b699a4c39d/assets/images/about-shape-4.svg" width="100" height="100" loading="lazy" alt="" class="shape about-shape-4">
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-separator"></div>
+
+            <!--
+              - #COURSE
+            -->
+            <section class="section course" id="courses" aria-label="course">
+                <div class="container">
+                    <p class="section-subtitle">Popular Courses</p>
+                    <h2 class="h2 section-title">Pick A Course To Get Started</h2>
+                    <ul class="grid-list">
+                        <li>
+                            <div class="course-card">
+                                <figure class="card-banner img-holder" style="--width: 370; --height: 220;">
+                                    <img src="https://github.com/codewithsadee/eduweb/blob/master/assets/images/course-1.jpg?raw=true" width="370" height="220" loading="lazy" alt="C# Programming Course" class="img-cover">
+                                </figure>
+                                <div class="abs-badge">
+                                    <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+                                    <span class="span">3 Weeks</span>
+                                </div>
+                                <div class="card-content">
+                                    <span class="badge">Beginner</span>
+                                    <h3 class="h3">
+                                        <a href="#" class="card-title">C# Programming Course</a>
+                                    </h3>
+                                    <p>Learn the fundamentals of programming in C# through hands-on projects.</p>
+                                    <div class="wrapper">
+                                        <div class="rating-wrapper">
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                        </div>
+                                        <p class="rating-text">(5.0/7 Rating)</p> <!-- Example Rating -->
+                                    </div>
+                                    <data class="price" value="29">$29.00</data>
+                                    <ul class="card-meta-list">
+                                        <li class="card-meta-item">
+                                            <ion-icon name="library-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">8 Lessons</span>
+                                        </li>
+                                        <li class="card-meta-item">
+                                            <ion-icon name="people-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">20 Students</span>
+                                        </li>
+                                    </ul>
+                                    <a href="https://www.udemy.com/course/csharp-tutorial-for-beginners/" target="_blank" class="btn has-before course-button">
+                                        <!-- Example external link -->
+                                        <span class="span">Enter Course</span>
+                                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="course-card">
+                                <figure class="card-banner img-holder" style="--width: 370; --height: 220;">
+                                    <img src="https://github.com/codewithsadee/eduweb/blob/master/assets/images/course-2.jpg?raw=true" width="370" height="220" loading="lazy" alt="UI/UX Design Course" class="img-cover">
+                                </figure>
+                                <div class="abs-badge">
+                                    <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+                                    <span class="span">8 Weeks</span>
+                                </div>
+                                <div class="card-content">
+                                    <span class="badge">Advanced</span>
+                                    <h3 class="h3">
+                                        <a href="#" class="card-title">UI/UX Design Fundamentals</a>
+                                    </h3>
+                                    <p>Discover how to design attractive and user-friendly interfaces.</p>
+                                    <div class="wrapper">
+                                        <div class="rating-wrapper">
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star-half"></ion-icon>
+                                        </div>
+                                        <p class="rating-text">(4.5 /9 Rating)</p> <!-- Example Rating -->
+                                    </div>
+                                    <data class="price" value="49">$49.00</data>
+                                    <ul class="card-meta-list">
+                                        <li class="card-meta-item">
+                                            <ion-icon name="library-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">15 Lessons</span>
+                                        </li>
+                                        <li class="card-meta-item">
+                                            <ion-icon name="people-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">35 Students</span>
+                                        </li>
+                                    </ul>
+                                    <a href="https://www.udemy.com/course/complete-web-designer-mobile-designer-zero-to-mastery/" target="_blank" class="btn has-before course-button">
+                                        <span class="span">Enter Course</span>
+                                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="course-card">
+                                <figure class="card-banner img-holder" style="--width: 370; --height: 220;">
+                                    <img src="https://github.com/codewithsadee/eduweb/blob/master/assets/images/course-3.jpg?raw=true" width="370" height="220" loading="lazy" alt="Digital Marketing Course" class="img-cover">
+                                </figure>
+                                <div class="abs-badge">
+                                    <ion-icon name="time-outline" aria-hidden="true"></ion-icon>
+                                    <span class="span">3 Weeks</span> <!-- Corrected time -->
+                                </div>
+                                <div class="card-content">
+                                    <span class="badge">Intermediate</span>
+                                    <h3 class="h3">
+                                        <a href="#" class="card-title">Digital Marketing Strategies</a>
+                                    </h3>
+                                    <p>Learn digital marketing strategies to increase your brand awareness.</p>
+                                    <div class="wrapper">
+                                        <div class="rating-wrapper">
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star"></ion-icon>
+                                            <ion-icon name="star-half"></ion-icon> <!-- Adjusted icon -->
+                                        </div>
+                                        <p class="rating-text">(4.9 /7 Rating)</p> <!-- Example Rating -->
+                                    </div>
+                                    <data class="price" value="35">$35.00</data>
+                                    <ul class="card-meta-list">
+                                        <li class="card-meta-item">
+                                            <ion-icon name="library-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">13 Lessons</span>
+                                        </li>
+                                        <li class="card-meta-item">
+                                            <ion-icon name="people-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">18 Students</span>
+                                        </li>
+                                    </ul>
+                                    <a href="https://www.coursera.org/specializations/digital-marketing" target="_blank" class="btn has-before course-button">
+                                        <span class="span">Enter Course</span>
+                                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <a asp-controller="Course" asp-action="Index" class="btn has-before">
+                        <span class="span">Browse more courses</span>
+                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                    </a>
+                </div>
+            </section>
+
+            <div class="section-separator"></div>
+
+            <!--
+              - #STATS
+            -->
+            <section class="section stats" aria-label="stats">
+                <div class="container">
+                    <ul class="grid-list">
+                        <li>
+                            <div class="stats-card" style="--color: 170, 75%, 41%">
+                                <h3 class="card-title">29.3k</h3>
+                                <p class="card-text">Student Enrolled</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="stats-card" style="--color: 351, 83%, 61%">
+                                <h3 class="card-title">32.4K</h3>
+                                <p class="card-text">Class Completed</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="stats-card" style="--color: 260, 100%, 67%">
+                                <h3 class="card-title">100%</h3>
+                                <p class="card-text">Satisfaction Rate</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="stats-card" style="--color: 42, 94%, 55%">
+                                <h3 class="card-title">354+</h3>
+                                <p class="card-text">Top Instructors</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="section-separator"></div>
+
+            <!--
+              - #BLOG
+            -->
+            <section class="section blog has-bg-image" id="blog" aria-label="blog"
+                     style="background-image: url('https://raw.githubusercontent.com/codewithsadee/eduweb/e95ce3bd395db274166c4d8abe7970b699a4c39d/assets/images/blog-bg.svg')">
+                <div class="container">
+                    <p class="section-subtitle">Latest Articles</p>
+                    <h2 class="h2 section-title">Get News With EduPro</h2>
+                    <ul class="grid-list">
+                        <li>
+                            <div class="blog-card">
+                                <figure class="card-banner img-holder has-after" style="--width: 370; --height: 370;">
+                                    <img src="https://github.com/codewithsadee/eduweb/blob/master/assets/images/blog-1.jpg?raw=true" width="370" height="370" loading="lazy" alt="Backend Development Course" class="img-cover">
+                                </figure>
+                                <div class="card-content">
+                                    <a href="#" class="card-btn" aria-label="read more">
+                                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                                    </a>
+                                    <a href="#" class="card-subtitle">Online</a>
+                                    <h3 class="h3">
+                                        <a href="#" class="card-title">Backend Development Course</a>
+                                    </h3>
+                                    <ul class="card-meta-list">
+                                        <li class="card-meta-item">
+                                            <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">SEPT 23, 2025</span>
+                                        </li>
+                                        <li class="card-meta-item">
+                                            <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">Com 09</span>
+                                        </li>
+                                    </ul>
+                                    <p class="card-text">
+                                        Become a Backend Developer: Power the Web with Robust Systems.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="blog-card">
+                                <figure class="card-banner img-holder has-after" style="--width: 370; --height: 370;">
+                                    <img src="https://github.com/codewithsadee/eduweb/blob/master/assets/images/blog-2.jpg?raw=true" width="370" height="370" loading="lazy" alt="Frontend Development Course" class="img-cover">
+                                </figure>
+                                <div class="card-content">
+                                    <a href="#" class="card-btn" aria-label="read more">
+                                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                                    </a>
+                                    <a href="#" class="card-subtitle">Online</a>
+                                    <h3 class="h3">
+                                        <a href="#" class="card-title">Frontend Development Course</a>
+                                    </h3>
+                                    <ul class="card-meta-list">
+                                        <li class="card-meta-item">
+                                            <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">DEC 10, 2025</span>
+                                        </li>
+                                        <li class="card-meta-item">
+                                            <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">Com 09</span>
+                                        </li>
+                                    </ul>
+                                    <p class="card-text">
+                                        Master Frontend Development: Build Stunning, Interactive Websites.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="blog-card">
+                                <figure class="card-banner img-holder has-after" style="--width: 370; --height: 370;">
+                                    <img src="https://github.com/codewithsadee/eduweb/blob/master/assets/images/blog-3.jpg?raw=true" width="370" height="370" loading="lazy" alt="Fullstack Development Course" class="img-cover">
+                                </figure>
+                                <div class="card-content">
+                                    <a href="#" class="card-btn" aria-label="read more">
+                                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                                    </a>
+                                    <a href="#" class="card-subtitle">Online</a>
+                                    <h3 class="h3">
+                                        <a href="#" class="card-title"> Fullstack Development Course</a>
+                                    </h3>
+                                    <ul class="card-meta-list">
+                                        <li class="card-meta-item">
+                                            <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">Oct 20, 2025</span>
+                                        </li>
+                                        <li class="card-meta-item">
+                                            <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
+                                            <span class="span">Com 09</span>
+                                        </li>
+                                    </ul>
+                                    <p class="card-text">
+                                        Fullstack Development: Build End-to-End Web Applications.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <img src="https://github.com/codewithsadee/eduweb/blob/master/assets/images/blog-shape.png?raw=true" width="186" height="186" loading="lazy" alt="" class="shape blog-shape">
+                </div>
+            </section>
+
+        </article>
+    </main>
+
+    <div class="section-separator"></div>
+
+    <!--
+      - #FOOTER
+    -->
+    <footer id="footer" style="background-color: black;">
+        <!-- Inline style for black background -->
+        <div class="footer-top section">
+            <div class="container grid-list">
+                <div class="footer-brand">
+                    <!-- Optional: Add Logo here -->
+                    <!-- <a asp-action="Index" class="logo footer-logo">
+                        <img src="~/images/logo-light.png" width="75" height="50" alt="EduWeb logo white">
+                    </a> -->
+                    <p class="footer-brand-text">
+                        <!-- Brief description or tagline -->
+                        Connecting learners worldwide.
+                    </p>
+                    <div class="wrapper">
+                        <span class="span">Add:</span>
+                        <address class="address">70-80 Upper St Norwich NR2</address>
+                    </div>
+                    <div class="wrapper">
+                        <span class="span">Call:</span>
+                        <a href="tel:+011234567890" class="footer-link">+01 123 4567 890</a>
+                    </div>
+                    <div class="wrapper">
+                        <span class="span">Email:</span>
+                        <a href="mailto:info@eduweb.com" class="footer-link">info@eduweb.com</a> <!-- Use mailto: -->
+                    </div>
+                </div>
+
+                <ul class="footer-list">
+                    <li>
+                        <p class="footer-list-title">Online Platform</p>
+                    </li>
+                    <li><a href="#about" class="footer-link">About</a></li>
+                    <li><a href="#courses" class="footer-link">Courses</a></li>
+                    <li><a href="#" class="footer-link">Instructor</a></li> <!-- Link to relevant page -->
+                    <li><a href="#" class="footer-link">Events</a></li> <!-- Link to relevant page -->
+                    <li><a href="#" class="footer-link">Instructor Profile</a></li> <!-- Link to relevant page -->
+                    <li><a href="#" class="footer-link">Purchase Guide</a></li> <!-- Link to relevant page -->
+                </ul>
+
+                <ul class="footer-list">
+                    <li>
+                        <p class="footer-list-title">Links</p>
+                    </li>
+                    <li><a href="#footer" class="footer-link">Contact Us</a></li>
+                    <li><a href="#" class="footer-link">Gallery</a></li> <!-- Link to relevant page -->
+                    <li><a href="#blog" class="footer-link">News & Articles</a></li>
+                    <li><a href="#" class="footer-link">FAQ's</a></li> <!-- Link to relevant page -->
+                    <li><a asp-controller="Auth" asp-action="Login" class="footer-link">Sign In/Registration</a></li>
+                    <li><a href="#" class="footer-link">Coming Soon</a></li> <!-- Link to relevant page -->
+                </ul>
+
+                <div class="footer-list">
+                    <p class="footer-list-title">Newsletter</p>
+                    <p class="footer-list-text">
+                        Enter your email address to register for our newsletter subscription
+                    </p>
+                    <form action="" class="newsletter-form">
+                        <!-- Add action URL -->
+                        <input type="email" name="email_address" placeholder="Your email" required class="input-field">
+                        <button type="submit" class="btn has-before">
+                            <span class="span">Subscribe</span>
+                            <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                        </button>
+                    </form>
+                    <ul class="social-list">
+                        <li><a href="#" class="social-link"><ion-icon name="logo-facebook"></ion-icon></a></li>
+                        <li><a href="#" class="social-link"><ion-icon name="logo-linkedin"></ion-icon></a></li>
+                        <li><a href="#" class="social-link"><ion-icon name="logo-instagram"></ion-icon></a></li>
+                        <li><a href="#" class="social-link"><ion-icon name="logo-twitter"></ion-icon></a></li>
+                        <li><a href="#" class="social-link"><ion-icon name="logo-youtube"></ion-icon></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="copyright">
+                    Copyright &copy; @DateTime.Now.Year All Rights Reserved by <a href="#" class="copyright-link">EduWeb</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!--
+      - #BACK TO TOP
+    -->
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <!--
+      - Custom JS Link
+    -->
+    <script src="~/js/edupro.js" defer></script>
+    <script src="~/js/search.js" defer></script> <!-- Assuming you have search.js -->
+    <!-- Cloudflare Email Decode (if needed, otherwise remove) -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+    <!-- Inline script for dropdown and search toggle -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Helper function
+            const addEventOnElements = function (elements, eventType, callback) {
+                if (elements) { // Check if elements exist
+                    for (let i = 0, len = elements.length; i < len; i++) {
+                        elements[i].addEventListener(eventType, callback);
+                    }
+                }
+            }
+
+            // User Dropdown Logic
+            const userDropdown = document.querySelector('.user-dropdown');
+            if (userDropdown) {
+                const toggleButton = userDropdown.querySelector('.user-dropdown-toggle');
+                const menu = userDropdown.querySelector('.user-dropdown-menu');
+                const arrow = userDropdown.querySelector('.dropdown-arrow'); // Get the arrow icon
+
+                toggleButton.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent click from bubbling up to document
+                    menu.classList.toggle('show');
+                    arrow.classList.toggle('up'); // Toggle arrow direction
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!userDropdown.contains(e.target)) {
+                        menu.classList.remove('show');
+                        arrow.classList.remove('up'); // Reset arrow direction
+                    }
+                });
+            }
+
+            // Search Toggle Logic
+            const searchToggle = document.getElementById('searchToggle');
+            const searchContainer = document.getElementById('searchContainer');
+            if (searchToggle && searchContainer) {
+                searchToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    searchContainer.classList.toggle('active');
+                    this.classList.toggle('active'); // Toggle active class on button itself if needed for styling
+                     // Optional: Focus the input when opening
+                    if (searchContainer.classList.contains('active')) {
+                         const searchInput = searchContainer.querySelector('.search-input');
+                         if (searchInput) {
+                             searchInput.focus();
+                         }
+                    }
+                });
+                 // Optional: Close search when clicking outside
+                 document.addEventListener('click', function(e) {
+                     if (!searchContainer.contains(e.target) && !searchToggle.contains(e.target)) {
+                         searchContainer.classList.remove('active');
+                         searchToggle.classList.remove('active');
+                     }
+                 });
+            }
+
+            // Mobile Nav Toggle Logic
+            const navTogglers = document.querySelectorAll("[data-nav-toggler]");
+            const navbar = document.querySelector("[data-navbar]");
+            const overlay = document.querySelector("[data-overlay]");
+            const toggleNav = function () {
+                navbar.classList.toggle("active");
+                overlay.classList.toggle("active");
+                document.body.classList.toggle("nav-active"); // Optional: prevent body scroll
+            }
+            addEventOnElements(navTogglers, "click", toggleNav);
+
+            // Header Active Logic
+            const header = document.querySelector("[data-header]");
+            const backTopBtn = document.querySelector("[data-back-top-btn]");
+            window.addEventListener("scroll", function () {
+                if (window.scrollY >= 100) {
+                    header.classList.add("active");
+                    if (backTopBtn) backTopBtn.classList.add("active"); // Check if backTopBtn exists
+                } else {
+                    header.classList.remove("active");
+                    if (backTopBtn) backTopBtn.classList.remove("active"); // Check if backTopBtn exists
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

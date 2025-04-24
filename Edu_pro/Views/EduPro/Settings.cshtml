@@ -1,0 +1,385 @@
+﻿@{
+    ViewData["Title"] = "Account Settings";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - EduWeb</title>
+    <link rel="stylesheet" href="~/css/edupro.css">
+    <!-- Include any additional CSS specific to this page -->
+    <style>
+        .settings-container {
+            padding: 2rem 0;
+        }
+
+        .settings-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--platinum);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-family: var(--ff-league-spartan);
+            font-weight: var(--fw-500);
+            color: var(--eerie-black-1);
+            cursor: pointer;
+            transition: var(--transition-1);
+            white-space: nowrap;
+        }
+
+            .tab-btn.active {
+                color: var(--kappel);
+                border-bottom-color: var(--kappel);
+            }
+
+            .tab-btn:hover:not(.active) {
+                color: var(--kappel_70);
+            }
+
+        .tab-content {
+            display: none;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: var(--fw-500);
+            color: var(--eerie-black-1);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--platinum);
+            border-radius: var(--radius-5);
+            font-family: var(--ff-poppins);
+            transition: border-color var(--transition-1);
+        }
+
+            .form-input:focus {
+                outline: none;
+                border-color: var(--kappel);
+            }
+
+        .form-hint {
+            font-size: var(--fs-7);
+            color: var(--gray-web);
+            margin-top: 0.25rem;
+        }
+
+        .profile-picture {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--platinum);
+        }
+
+        .upload-btn {
+            background-color: var(--platinum);
+            color: var(--eerie-black-1);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-5);
+            cursor: pointer;
+            transition: var(--transition-1);
+            border: none;
+        }
+
+            .upload-btn:hover {
+                background-color: var(--kappel_15);
+                color: var(--kappel);
+            }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .save-btn {
+            background-color: var(--kappel);
+            color: var(--white);
+        }
+
+        .cancel-btn {
+            background-color: var(--platinum);
+            color: var(--eerie-black-1);
+        }
+
+        .delete-account {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--platinum);
+        }
+
+            .delete-account h3 {
+                color: var(--radical-red);
+                margin-bottom: 1rem;
+            }
+
+            .delete-account p {
+                margin-bottom: 1.5rem;
+                color: var(--gray-web);
+            }
+
+        .delete-btn {
+            background-color: var(--radical-red_10);
+            color: var(--radical-red);
+            border: 1px solid var(--radical-red);
+        }
+
+            .delete-btn:hover {
+                background-color: var(--radical-red);
+                color: var(--white);
+            }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .profile-picture
+
+        {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .btn-group {
+            flex-direction: column;
+        }
+
+            .btn-group .btn {
+                width: 100%;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Include header partial or navigation component -->
+
+    <main>
+        <section class="section settings-container">
+            <div class="container">
+                <h1 class="h2 section-title">Account Settings</h1>
+
+                <div class="settings-tabs">
+                    <button class="tab-btn active" data-tab="profile">Profile Information</button>
+                    <button class="tab-btn" data-tab="password">Change Password</button>
+                    <button class="tab-btn" data-tab="notifications">Notification Settings</button>
+                    <button class="tab-btn" data-tab="privacy">Privacy Settings</button>
+                </div>
+
+                <!-- Profile Information Tab -->
+                <div id="profile" class="tab-content active">
+                    <form action="#" method="post" enctype="multipart/form-data">
+                        <div class="profile-picture">
+                            <img src="~/images/default-avatar.png" alt="Profile Picture" class="avatar">
+                            <div>
+                                <h3>Profile Picture</h3>
+                                <p>Upload a new profile picture</p>
+                                <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
+                                <button type="button" class="upload-btn" onclick="document.getElementById('profilePicture').click()">
+                                    Choose File
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" class="form-input" value="John Doe">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input" value="johndoe@example.com" disabled>
+                            <p class="form-hint">Your email address cannot be changed</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bio" class="form-label">Bio</label>
+                            <textarea id="bio" name="bio" class="form-input" rows="4">Web developer and lifelong learner</textarea>
+                            <p class="form-hint">Tell us a little about yourself</p>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn save-btn">Save Changes</button>
+                            <button type="button" class="btn cancel-btn">Cancel</button>
+                        </div>
+                    </form>
+
+                    <div class="delete-account">
+                        <h3>Delete Account</h3>
+                        <p>Once you delete your account, there is no going back. Please be certain.</p>
+                        <button class="btn delete-btn">Delete Account</button>
+                    </div>
+                </div>
+
+                <!-- Change Password Tab -->
+                <div id="password" class="tab-content">
+                    <form action="#" method="post">
+                        <div class="form-group">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" id="currentPassword" name="currentPassword" class="form-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" id="newPassword" name="newPassword" class="form-input">
+                            <p class="form-hint">Password must be at least 8 characters and include a number and special character</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-input">
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn save-btn">Update Password</button>
+                            <button type="button" class="btn cancel-btn">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Notification Settings Tab -->
+                <div id="notifications" class="tab-content">
+                    <form action="#" method="post">
+                        <div class="form-group">
+                            <label class="form-label">Email Notifications</label>
+                            <div class="checkbox-group">
+                                <div>
+                                    <input type="checkbox" id="courseUpdates" name="notifications[]" value="courseUpdates" checked>
+                                    <label for="courseUpdates">Course updates and announcements</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="newCourses" name="notifications[]" value="newCourses" checked>
+                                    <label for="newCourses">New course recommendations</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="promotions" name="notifications[]" value="promotions">
+                                    <label for="promotions">Promotions and special offers</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="newsletter" name="notifications[]" value="newsletter" checked>
+                                    <label for="newsletter">Weekly newsletter</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn save-btn">Save Preferences</button>
+                            <button type="button" class="btn cancel-btn">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Privacy Settings Tab -->
+                <div id="privacy" class="tab-content">
+                    <form action="#" method="post">
+                        <div class="form-group">
+                            <label class="form-label">Profile Visibility</label>
+                            <div>
+                                <input type="radio" id="public" name="profileVisibility" value="public" checked>
+                                <label for="public">Public - Anyone can see my profile</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="private" name="profileVisibility" value="private">
+                                <label for="private">Private - Only enrolled students and instructors can see my profile</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Course Progress Sharing</label>
+                            <div>
+                                <input type="checkbox" id="shareCourseProgress" name="shareCourseProgress" checked>
+                                <label for="shareCourseProgress">Share my course progress with instructors</label>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button type="submit" class="btn save-btn">Save Privacy Settings</button>
+                            <button type="button" class="btn cancel-btn">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Include footer partial -->
+
+    <!-- Back to top button -->
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <!-- Custom scripts -->
+    <script src="~/js/edupro.js"></script>
+
+    <script>
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Get the tab to activate
+                    const tabToActivate = this.dataset.tab;
+
+                    // Remove active class from all buttons and tabs
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding tab
+                    this.classList.add('active');
+                    document.getElementById(tabToActivate).classList.add('active');
+                });
+            });
+
+            // File upload preview (optional enhancement)
+            const profilePicture = document.getElementById('profilePicture');
+            const avatar = document.querySelector('.avatar');
+
+            if (profilePicture && avatar) {
+                profilePicture.addEventListener('change', function() {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            avatar.src = e.target.result;
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,820 @@
+@model EduPro.Models.ViewModels.CartViewModel
+@{
+    ViewData["Title"] = "Shopping Cart";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="~/images/logo.jpeg" type="image/svg+xml" />
+    <link rel="stylesheet" href="~/css/edupro.css" />
+    <link rel="stylesheet" href="~/css/cart.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- IonIcons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <title>Your Cart - EDU PRO</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .cart-item img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .cart-details {
+            flex: 1;
+            padding: 15px;
+            position: relative;
+        }
+
+        .cart-details h2 {
+            margin: 0 0 5px 0;
+            font-size: 1.25rem;
+            color: #333;
+        }
+
+        .cart-details p {
+            margin: 0 0 10px 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .price {
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .remove-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            align-self: center;
+            margin-right: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .remove-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .cart-summary {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .cart-summary h3 {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .checkout-btn {
+            display: block;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background-color: #388E3C;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .empty-cart i {
+            font-size: 60px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-cart h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .empty-cart p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .browse-courses-btn, .login-btn {
+            display: inline-block;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin: 0 5px 10px 5px;
+        }
+
+        .browse-courses-btn:hover, .login-btn:hover {
+            background-color: #388E3C;
+        }
+
+        .login-btn {
+            background-color: #4CAF50;
+        }
+
+        .login-btn:hover {
+                background-color: #388E3C;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .payment-methods {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .payment-methods h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .payment-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .payment-icons img {
+            height: 30px;
+            width: auto;
+        }
+
+        .clear-cart-btn {
+            display: block;
+            background-color: #f0f0f0;
+            color: #666;
+            text-align: center;
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .clear-cart-btn:hover {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .cart-actions {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* User Dropdown Styles */
+        .user-dropdown {
+            position: relative;
+            margin-left: 15px;
+        }
+
+        .user-dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--ff-poppins);
+            font-size: var(--fs-5);
+            color: var(--eerie-black-1);
+            padding: 5px 10px;
+            border-radius: var(--radius-5);
+            transition: background-color var(--transition-1);
+        }
+
+            .user-dropdown-toggle ion-icon {
+                font-size: 22px;
+            }
+
+            .user-dropdown-toggle .dropdown-arrow {
+                font-size: 16px;
+                transition: transform var(--transition-1);
+            }
+
+                .user-dropdown-toggle .dropdown-arrow.up {
+                    transform: rotate(180deg);
+                }
+
+            .user-dropdown-toggle:hover,
+            .user-dropdown-toggle:focus {
+                background-color: var(--platinum);
+                outline: none;
+            }
+
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background-color: var(--white);
+            border-radius: var(--radius-5);
+            box-shadow: var(--shadow-2);
+            min-width: 200px;
+            padding: 10px 0;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity var(--transition-2), visibility var(--transition-2), transform var(--transition-2);
+            border: 1px solid var(--light-gray);
+        }
+
+            .user-dropdown-menu.show {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+        .user-info-header {
+            padding: 10px 15px;
+            font-size: var(--fs-6);
+            color: var(--gray-web);
+            border-bottom: 1px solid var(--platinum);
+            margin-bottom: 5px;
+        }
+
+            .user-info-header strong {
+                color: var(--eerie-black-1);
+                font-weight: var(--fw-500);
+            }
+
+        .user-dropdown-menu a,
+        .user-dropdown-menu .logout-btn {
+            display: block;
+            padding: 10px 15px;
+            color: var(--eerie-black-1);
+            font-size: var(--fs-6);
+            text-decoration: none;
+            transition: background-color var(--transition-1), color var(--transition-1);
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            font-family: var(--ff-poppins);
+        }
+
+            .user-dropdown-menu a ion-icon,
+            .user-dropdown-menu .logout-btn ion-icon {
+                margin-right: 8px;
+                vertical-align: middle;
+                font-size: 18px;
+            }
+
+            .user-dropdown-menu a:hover,
+            .user-dropdown-menu .logout-btn:hover {
+                background-color: var(--kappel_15);
+                color: var(--kappel);
+            }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: var(--platinum);
+            border: none;
+            margin: 5px 0;
+        }
+
+        .logout-form {
+            margin: 0;
+            padding: 0;
+        }
+
+        .user-dropdown-menu .logout-btn {
+            color: var(--radical-red);
+            font-weight: var(--fw-500);
+        }
+
+            .user-dropdown-menu .logout-btn:hover {
+                color: var(--white);
+                background-color: var(--radical-red);
+            }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding-block: 15px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-1);
+            z-index: 4;
+        }
+
+        .header.active {
+            padding-block: 12px;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-action-btn {
+            position: relative;
+            font-size: 22px;
+            color: var(--eerie-black-1);
+            padding: 5px;
+        }
+
+        .btn-badge {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: var(--kappel);
+            color: var(--white);
+            font-size: 12px;
+            font-weight: var(--fw-500);
+            line-height: 1;
+            padding: 4px 8px;
+            border-radius: 50px;
+        }
+
+        /* Enhanced search container */
+        .search-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--white);
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+            .search-container.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+        .search-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: var(--radius-5);
+            font-family: var(--ff-poppins);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .search-input:focus {
+                border-color: var(--kappel);
+                box-shadow: 0 0 0 3px var(--kappel_15);
+                outline: none;
+            }
+
+        .search-submit {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray-web);
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+            .search-submit:hover {
+                color: var(--kappel);
+            }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+            }
+
+            .cart-item img {
+                width: 100%;
+                height: 150px;
+            }
+
+            .remove-btn {
+                margin: 15px;
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header" data-header>
+        <div class="container">
+            <a asp-controller="EduPro" asp-action="Index" class="logo">
+                <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+            </a>
+
+            <nav class="navbar" data-navbar>
+                <div class="wrapper">
+                    <a asp-controller="EduPro" asp-action="Index" class="logo">
+                        <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+                    </a>
+                    <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+                        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+
+                <ul class="navbar-list">
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" class="navbar-link" data-nav-link>Home</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" asp-fragment="about" class="navbar-link" data-nav-link>About</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="Course" asp-action="Index" class="navbar-link" data-nav-link>Courses</a>
+                    </li>
+                    <li class="navbar-item">
+                        <a asp-controller="EduPro" asp-action="Index" asp-fragment="footer" class="navbar-link" data-nav-link>Contact Us</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Header Actions: Search, Cart, Auth -->
+            <div class="header-actions">
+                <button class="header-action-btn search-toggle" aria-label="toggle search" title="Search" id="searchToggle">
+                    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                </button>
+
+                <a asp-controller="Cart" asp-action="Index" class="header-action-btn" aria-label="cart" title="Shopping Cart">
+                    <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
+                    <span class="btn-badge">@(Model?.Items?.Count ?? 0)</span>
+                </a>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <!-- User Dropdown - Shown when logged in -->
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-toggle" aria-label="User menu" title="User Menu">
+                            <ion-icon name="person-circle-outline" aria-hidden="true"></ion-icon>
+                            <span>@User.Identity.Name</span>
+                            <ion-icon name="chevron-down-outline" class="dropdown-arrow" aria-hidden="true"></ion-icon>
+                        </button>
+                        <div class="user-dropdown-menu">
+                            <div class="user-info-header">
+                                Signed in as <br><strong>@User.Identity.Name</strong>
+                            </div>
+                            <a asp-controller="Courses" asp-action="MyCourses">
+                                <ion-icon name="book-outline" aria-hidden="true"></ion-icon>
+                                My Courses
+                            </a>
+                            <a asp-controller="EduPro" asp-action="Settings">
+                                <ion-icon name="settings-outline" aria-hidden="true"></ion-icon>
+                                Settings
+                            </a>
+                            <hr class="dropdown-divider">
+                            <form asp-controller="Auth" asp-action="Logout" method="post" class="logout-form">
+                                <button type="submit" class="logout-btn">
+                                    <ion-icon name="log-out-outline" aria-hidden="true"></ion-icon>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- Sign Up Button - Shown when not logged in -->
+                    <a class="btn has-before" asp-controller="Auth" asp-action="Signup">
+                        <span class="span">Sign Up</span>
+                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                    </a>
+                }
+            </div>
+
+            <!-- Mobile Nav Overlay -->
+            <div class="overlay" data-nav-toggler data-overlay></div>
+
+            <!-- Search Container -->
+            <div class="search-container" id="searchContainer">
+                <div class="search-wrapper">
+                    <form asp-controller="Course" asp-action="Search" method="get">
+                        <input type="text" name="searchTerm" placeholder="Search courses..." class="search-input">
+                        <button type="submit" class="search-submit" aria-label="Submit search">
+                            <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="height: 80px;"></div> <!-- Spacer for fixed header -->
+
+    <header>
+        <h1>Your Cart</h1>
+        <a href="@Url.Action("Index", "EduPro")" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </header>
+
+    <div class="container">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+        
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="alert alert-info">
+                @TempData["InfoMessage"]
+            </div>
+        }
+
+        @if (Model != null && Model.Items.Count > 0)
+        {
+            <div class="cart-container">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="cart-item">
+                        <img src="@item.ImageUrl" alt="@item.Title">
+                        <div class="cart-details">
+                            <h2>@item.Title</h2>
+                            <p>@item.Description</p>
+                            <div class="item-meta">
+                                <span><i class="fas fa-signal"></i> @item.Level</span>
+                                <span><i class="fas fa-clock"></i> @item.DurationInWeeks Weeks</span>
+                                <span><i class="fas fa-book"></i> @item.LessonsCount Lessons</span>
+                            </div>
+                            <span class="price">$@item.Price.ToString("0.00")</span>
+                        </div>
+                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                            <input type="hidden" name="cartItemId" value="@item.Id" />
+                            <button type="submit" class="remove-btn">REMOVE</button>
+                        </form>
+                    </div>
+                }
+            </div>
+
+            <div class="cart-summary">
+                <h3>Total: <span>$@Model.TotalPrice.ToString("0.00")</span></h3>
+                <div class="cart-actions">
+                    <a asp-controller="Payment" asp-action="Checkout" class="checkout-btn">
+                        PROCEED TO CHECKOUT
+                    </a>
+                    
+                    <form asp-controller="Cart" asp-action="ClearCart" method="post">
+                        <button type="submit" class="clear-cart-btn">Clear Cart</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="payment-methods">
+                <h3>Secure Payment Options</h3>
+                <div class="payment-icons">
+                    <img src="~/images/visa.jpg" alt="Visa" />
+                    <img src="~/images/Mastcard.jpg" alt="Mastercard" />
+                    <img src="~/images/paypal.jpg" alt="PayPal" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Your cart is empty</h2>
+                
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <p>Please log in to add courses to your cart.</p>
+                    <a asp-controller="Auth" asp-action="Signup" class="login-btn">
+                        Log In / Sign Up
+                    </a>
+                }
+                else
+                {
+                    <p>Looks like you haven't added any courses to your cart yet.</p>
+                }
+
+                <a asp-controller="Course" asp-action="Index" class="browse-courses-btn">Browse Courses</a>
+            </div>
+        }
+    </div>
+
+    <!-- BACK TO TOP -->
+    <a href="#top" class="back-top-btn" aria-label="back to top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+    </a>
+
+    <!-- SCRIPTS -->
+    <script src="~/js/edupro.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // User Dropdown Logic
+            const userDropdown = document.querySelector('.user-dropdown');
+            if (userDropdown) {
+                const toggleButton = userDropdown.querySelector('.user-dropdown-toggle');
+                const menu = userDropdown.querySelector('.user-dropdown-menu');
+                const arrow = userDropdown.querySelector('.dropdown-arrow');
+
+                toggleButton.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    menu.classList.toggle('show');
+                    arrow.classList.toggle('up');
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!userDropdown.contains(e.target)) {
+                        menu.classList.remove('show');
+                        arrow.classList.remove('up');
+                    }
+                });
+            }
+
+            // Search Toggle Logic
+            const searchToggle = document.getElementById('searchToggle');
+            const searchContainer = document.getElementById('searchContainer');
+            if (searchToggle && searchContainer) {
+                searchToggle.addEventListener('click', function () {
+                    searchContainer.classList.toggle('active');
+                    this.classList.toggle('active');
+
+                    if (searchContainer.classList.contains('active')) {
+                        const searchInput = searchContainer.querySelector('.search-input');
+                        if (searchInput) {
+                            searchInput.focus();
+                        }
+                    }
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!searchContainer.contains(e.target) && !searchToggle.contains(e.target)) {
+                        searchContainer.classList.remove('active');
+                        searchToggle.classList.remove('active');
+                    }
+                });
+            }
+
+            // Mobile Nav Toggle Logic
+            const navTogglers = document.querySelectorAll("[data-nav-toggler]");
+            const navbar = document.querySelector("[data-navbar]");
+            const overlay = document.querySelector("[data-overlay]");
+
+            function toggleNav() {
+                navbar.classList.toggle("active");
+                overlay.classList.toggle("active");
+                document.body.classList.toggle("nav-active");
+            }
+
+            if (navTogglers) {
+                for (let i = 0; i < navTogglers.length; i++) {
+                    navTogglers[i].addEventListener("click", toggleNav);
+                }
+            }
+
+            // Header Active Logic
+            const header = document.querySelector("[data-header]");
+            const backTopBtn = document.querySelector("[data-back-top-btn]");
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY >= 100) {
+                    header.classList.add("active");
+                    if (backTopBtn) backTopBtn.classList.add("active");
+                } else {
+                    header.classList.remove("active");
+                    if (backTopBtn) backTopBtn.classList.remove("active");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

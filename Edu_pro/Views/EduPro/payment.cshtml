@@ -1,0 +1,115 @@
+@model EduPro.Models.ViewModels.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/images/logo.jpeg" type="image/svg+xml" />
+    <link rel="stylesheet" href="~/css/payment.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <title>Checkout - EDU PRO</title>
+</head>
+<body>
+    <header>
+        <h1>Secure Checkout</h1>
+        <a href="@Url.Action("Index", "Cart")" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Cart
+        </a>
+    </header>
+
+    <div class="container">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <div class="payment-form">
+            <h2>Payment Details</h2>
+            <form asp-controller="Payment" asp-action="ProcessPayment" method="post" id="paymentForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="FullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="Email" value="@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value" required>
+                </div>
+                <div class="form-group">
+                    <label for="card">Card Number</label>
+                    <input type="text" id="card" name="CardNumber" placeholder="1234 5678 9012 3456" required>
+                </div>
+                <div class="form-group card-details">
+                    <div>
+                        <label for="expiry">Expiry Date</label>
+                        <input type="text" id="expiry" name="ExpiryDate" placeholder="MM/YY" required>
+                    </div>
+                    <div>
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="Cvv" placeholder="123" required>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">Pay $@Model.TotalAmount.ToString("0.00")</button>
+            </form>
+            <div class="secure-badge">
+                <i class="fas fa-lock"></i>
+                Secure 256-bit SSL encryption
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <h2>Order Summary</h2>
+            @foreach (var item in Model.CartItems)
+            {
+                <div class="order-item">
+                    <span>@item.Course.Title</span>
+                    <span>$@item.Course.Price.ToString("0.00")</span>
+                </div>
+            }
+            <div class="order-total">
+                Total: $@Model.TotalAmount.ToString("0.00")
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            // In a real application, you would validate the form here
+            // For this example, we'll just let it submit normally
+        });
+
+        // Format card number with spaces
+        document.getElementById('card').addEventListener('input', function(e) {
+            var value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            var formattedValue = '';
+
+            for (var i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+
+            this.value = formattedValue;
+        });
+
+        // Format expiry date
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            var value = this.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+
+            if (value.length > 2) {
+                this.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            } else {
+                this.value = value;
+            }
+        });
+    </script>
+</body>
+</html>

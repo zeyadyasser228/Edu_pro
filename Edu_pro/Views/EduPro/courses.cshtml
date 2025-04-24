@@ -1,0 +1,115 @@
+﻿@model List<EduPro.Models.CourseModel>
+@{
+    ViewData["Title"] = "Browse Courses";
+}
+
+<section class="courses-hero">
+    <div class="container">
+        <h1>Browse Our Courses</h1>
+        <p>Discover a wide range of courses to enhance your skills and knowledge</p>
+    </div>
+</section>
+
+<section class="filter-section">
+    <div class="container">
+        <form asp-action="Filter" method="get" class="filters">
+            <div class="filter-group">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="all" selected="@(ViewBag.Category == null || ViewBag.Category == "all")">All Categories</option>
+                    <option value="Programming" selected="@(ViewBag.Category == "Programming")">Programming</option>
+                    <option value="Design" selected="@(ViewBag.Category == "Design")">Design</option>
+                    <option value="Marketing" selected="@(ViewBag.Category == "Marketing")">Marketing</option>
+                    <option value="Business" selected="@(ViewBag.Category == "Business")">Business</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="level">Level</label>
+                <select id="level" name="level">
+                    <option value="all" selected="@(ViewBag.Level == null || ViewBag.Level == "all")">All Levels</option>
+                    <option value="Beginner" selected="@(ViewBag.Level == "Beginner")">Beginner</option>
+                    <option value="Intermediate" selected="@(ViewBag.Level == "Intermediate")">Intermediate</option>
+                    <option value="Advanced" selected="@(ViewBag.Level == "Advanced")">Advanced</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="duration">Duration</label>
+                <select id="duration" name="duration">
+                    <option value="all" selected="@(ViewBag.Duration == null || ViewBag.Duration == "all")">Any Duration</option>
+                    <option value="short" selected="@(ViewBag.Duration == "short")">1-4 Weeks</option>
+                    <option value="medium" selected="@(ViewBag.Duration == "medium")">5-8 Weeks</option>
+                    <option value="long" selected="@(ViewBag.Duration == "long")">9+ Weeks</option>
+                </select>
+            </div>
+            <div class="filter-group search">
+                <form asp-action="Search" method="get">
+                    <input type="text" id="searchTerm" name="searchTerm" placeholder="Search courses..." value="@ViewBag.SearchTerm" />
+                    <button type="submit" id="search-btn"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="filter-group">
+                <button type="submit" class="btn btn-primary">Apply Filters</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<section class="courses-grid">
+    <div class="container">
+        @if (Model != null && Model.Any())
+        {
+            <div class="courses-container">
+                @foreach (var course in Model)
+                {
+                    <div class="course-card">
+                        <div class="course-image">
+                            <img src="@course.ImageUrl" alt="@course.Title">
+                            <div class="course-badge">@course.Level</div>
+                        </div>
+                        <div class="course-content">
+                            <div class="course-info">
+                                <span class="course-category">@course.Category</span>
+                                <span class="course-rating">
+                                    <i class="fas fa-star"></i> @course.Rating.ToString("0.0")
+                                </span>
+                            </div>
+                            <h3 class="course-title">@course.Title</h3>
+                            <p class="course-description">@course.Description.Substring(0, Math.Min(100, course.Description.Length))...</p>
+                            <div class="course-meta">
+                                <div class="course-duration">
+                                    <i class="fas fa-clock"></i> @course.DurationInWeeks Weeks
+                                </div>
+                                <div class="course-lessons">
+                                    <i class="fas fa-book"></i> @course.LessonsCount Lessons
+                                </div>
+                                <div class="course-students">
+                                    <i class="fas fa-users"></i> @course.StudentsEnrolled Students
+                                </div>
+                            </div>
+                            <div class="course-footer">
+                                <div class="course-price">$@course.Price.ToString("0.00")</div>
+                                <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="no-courses">
+                <h3>No courses found matching your criteria</h3>
+                <p>Try adjusting your filters or search term to find more courses.</p>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Optional client-side filtering/sorting
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add any client-side JS for enhancing the course browsing experience
+        });
+    </script>
+}
