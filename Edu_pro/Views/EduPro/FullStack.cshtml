@@ -1,0 +1,142 @@
+﻿@{
+	Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullstack Development Course - EduPro</title>
+    <link rel="stylesheet" href="~/css/blog.css" />
+    <link rel="stylesheet" href="~/css/edupro.css">
+</head>
+<body>
+    <header class="header" data-header>
+        <div class="container">
+
+            <a asp-controller="EduPro" asp-action="Index" class="logo">
+                <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+            </a>
+
+            <nav class="navbar" data-navbar>
+
+                <div class="wrapper">
+                    <a href="#" class="logo">
+                    </a>
+
+                    <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+                        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+
+                <ul class="navbar-list">
+                    <ul class="navbar-list">
+                        <li><a asp-controller="EduPro" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="about">About</a></li>
+                        <li><a asp-controller="Course" asp-action="Index" class="active">Courses</a></li>
+                        <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="footer">Contact Us</a></li>
+                    </ul>
+
+
+            </nav>
+
+
+            <div class="header-actions">
+
+                <button class="header-action-btn" aria-label="search" title="Search" id="searchToggle">
+                    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                </button>
+
+                <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+                @* <a asp-controller="Cart" asp-action="Index" class="header-action-btn" aria-label="cart" title="Shopping Cart"> *@
+                @*     <ion-icon name="cart-outline" aria-hidden="true"></ion-icon> *@
+                @*     <span class="btn-badge">2</span> *@
+                @* </a> *@
+                <!-- <a href="dashboard.html" class="btn has-before">
+                  <span class="span">Class room</span> -->
+                @* <a href="signup.html" class="btn has-before"> *@
+                @*     <span class="span">sign up</span> *@
+
+
+                @*     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon> *@
+                @* </a> *@
+
+                @* <div class="overlay" data-nav-toggler data-overlay></div> *@
+                @* <div class="search-container" id="searchContainer"> *@
+                @*     <div class="search-wrapper"> *@
+                @*         <input type="text" placeholder="Search..." class="search-input"> *@
+                @*         <button class="search-submit" aria-label="Submit search"> *@
+                @*             <ion-icon name="search-outline" aria-hidden="true"></ion-icon> *@
+                @*         </button> *@
+                @*     </div> *@
+                @* </div> *@
+    </header>
+
+
+    <main class="container">
+    
+
+        <article class="course-detail">
+            <div class="course-header">
+                <span class="article-tag">CODING</span>
+                <h1>Fullstack Development Course</h1>
+                <div class="article-meta">
+                    <span><i class="icon-calendar"></i> OCT 20, 2025</span>
+                    <span><i class="icon-comment"></i> Com 09</span>
+                </div>
+            </div>
+
+            <div class="course-image">
+                <img src="/images/FullStack.png" alt="Fullstack Development">
+            </div>
+
+            <div class="course-content">
+                <h2>Fullstack Development: Build End-to-End Web Applications</h2>
+                <p>Fullstack development combines both frontend and backend skills to create complete web applications from start to finish. This comprehensive course will equip you with the knowledge and hands-on experience to become a versatile fullstack developer.</p>
+
+                <h3>Course Overview</h3>
+                <p>This intensive 16-week program covers the entire web development stack. You'll learn to build complete, production-ready applications by mastering both client-side and server-side technologies.</p>
+
+                <h3>What You'll Learn</h3>
+                <ul>
+                    <li>Frontend development (HTML5, CSS3, JavaScript, React)</li>
+                    <li>Backend development (Node.js, Express)</li>
+                    <li>Database design and management (MongoDB, MySQL)</li>
+                    <li>RESTful API development</li>
+                    <li>Authentication and authorization systems</li>
+                    <li>Full application deployment workflows</li>
+                    <li>Testing and debugging across the stack</li>
+                    <li>Performance optimization techniques</li>
+                </ul>
+
+                <h3>Course Structure</h3>
+                <p>The course follows a comprehensive approach to fullstack development:</p>
+                <ol>
+                    <li><strong>Frontend Fundamentals:</strong> HTML, CSS, and JavaScript essentials</li>
+                    <li><strong>Advanced Frontend:</strong> React and modern JavaScript frameworks</li>
+                    <li><strong>Backend Basics:</strong> Server-side programming with Node.js</li>
+                    <li><strong>Database Integration:</strong> Working with SQL and NoSQL databases</li>
+                    <li><strong>API Development:</strong> Building and consuming RESTful services</li>
+                    <li><strong>Authentication:</strong> Implementing secure user management</li>
+                    <li><strong>Deployment:</strong> Cloud hosting and DevOps basics</li>
+                    <li><strong>Capstone Project:</strong> Building a complete fullstack application</li>
+                </ol>
+
+                <h3>Prerequisites</h3>
+                <p>Basic programming knowledge is recommended but not required. This course is designed to accommodate beginners while challenging those with prior experience.</p>
+
+               
+            </div>
+        </article>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 EduPro. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

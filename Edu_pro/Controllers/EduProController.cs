@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Identity.Client;
 using System.Security.Claims;
 
 namespace Edu_pro.Controllers
@@ -66,7 +67,22 @@ namespace Edu_pro.Controllers
         {
             return RedirectToAction("MyCourses", "Courses");
         }
-
         
+
+        public IActionResult BackEnd()
+        {
+            return View();
+        }
+
+        public IActionResult FrontEnd()
+        {
+            return View();
+        }
+
+
+        public IActionResult FullStack()
+        {
+            return View();
+        }
     }
 }

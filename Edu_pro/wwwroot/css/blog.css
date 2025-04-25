@@ -1,0 +1,373 @@
+/* Global Styles */
+:root {
+  --primary-color: #2ecc71;
+  --secondary-color: #27ae60;
+  --text-color: #333;
+  --light-text: #666;
+  --lighter-text: #999;
+  --bg-color: #fff;
+  --light-bg: #f9f9f9;
+  --border-color: #e0e0e0;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--light-bg);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Header Styles */
+header {
+  background-color: var(--bg-color);
+  box-shadow: var(--shadow);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+}
+
+nav ul li {
+  margin-left: 25px;
+}
+
+nav ul li a {
+  color: var(--text-color);
+  font-weight: 500;
+  padding: 5px 0;
+  position: relative;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: var(--primary-color);
+}
+
+nav ul li a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+/* Main Content Styles */
+main {
+  padding: 40px 0;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  position: relative;
+  display: inline-block;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background-color: var(--primary-color);
+}
+
+/* Article Grid */
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.article-card {
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+}
+
+.article-image {
+  height: 200px;
+  overflow: hidden;
+}
+
+.article-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.article-card:hover .article-image img {
+  transform: scale(1.05);
+}
+
+.article-content {
+  padding: 20px;
+}
+
+.article-tag {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.article-content h3 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+.article-meta {
+  display: flex;
+  gap: 15px;
+  font-size: 0.85rem;
+  color: var(--lighter-text);
+  margin-bottom: 15px;
+}
+
+.article-meta span {
+  display: flex;
+  align-items: center;
+}
+
+.article-content p {
+  color: var(--light-text);
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.read-more {
+  display: inline-block;
+  font-weight: 600;
+  color: var(--primary-color);
+  position: relative;
+}
+
+.read-more::after {
+  content: '→';
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.read-more:hover::after {
+  transform: translateX(5px);
+}
+
+/* Course Detail Page Styles */
+.breadcrumb {
+  margin-bottom: 20px;
+  color: var(--lighter-text);
+  font-size: 0.9rem;
+}
+
+.course-detail {
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 40px;
+}
+
+.course-header {
+  padding: 25px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.course-header h1 {
+  font-size: 2rem;
+  margin: 10px 0;
+}
+
+.course-image {
+  width: 100%;
+  height: 400px;
+}
+
+.course-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.course-content {
+  padding: 30px;
+}
+
+.course-content h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+}
+
+.course-content h3 {
+  margin: 25px 0 15px;
+  font-size: 1.4rem;
+  color: var(--text-color);
+}
+
+.course-content p {
+  margin-bottom: 15px;
+  line-height: 1.8;
+  color: var(--light-text);
+}
+
+.course-content ul,
+.course-content ol {
+  margin: 15px 0 15px 20px;
+  color: var(--light-text);
+}
+
+.course-content li {
+  margin-bottom: 8px;
+}
+
+.enrollment-info {
+  margin-top: 40px;
+  padding: 25px;
+  background-color: var(--light-bg);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+}
+
+.enrollment-info h3 {
+  margin-top: 0;
+}
+
+.enrollment-info ul {
+  margin-bottom: 25px;
+}
+
+.btn-primary {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.related-courses h2 {
+  margin-bottom: 30px;
+}
+
+.related-courses .article-card {
+  max-width: none;
+}
+
+/* Footer Styles */
+footer {
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+  padding: 25px 0;
+  text-align: center;
+  color: var(--lighter-text);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  header .container {
+      flex-direction: column;
+      text-align: center;
+  }
+  
+  nav ul {
+      margin-top: 15px;
+      justify-content: center;
+  }
+  
+  nav ul li {
+      margin: 0 10px;
+  }
+  
+  .article-grid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .course-image {
+      height: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .article-grid {
+      grid-template-columns: 1fr;
+  }
+  
+  .course-header h1 {
+      font-size: 1.8rem;
+  }
+  
+  .course-image {
+      height: 200px;
+  }
+  
+  .course-content {
+      padding: 20px;
+  }
+}

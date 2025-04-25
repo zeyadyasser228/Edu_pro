@@ -1,0 +1,171 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Backend Development Course - EduPro</title>
+    <link rel="stylesheet" href="~/css/blog.css" />
+    <link rel="stylesheet" href="~/css/edupro.css">
+</head>
+<body>
+    <header class="header" data-header>
+        <div class="container">
+
+            <a asp-controller="EduPro" asp-action="Index" class="logo">
+                <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+            </a>
+
+            <nav class="navbar" data-navbar>
+
+                <div class="wrapper">
+                    <a href="#" class="logo">
+                    </a>
+
+                    <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+                        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+
+                <ul class="navbar-list">
+                    <ul class="navbar-list">
+                        <li><a asp-controller="EduPro" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="about">About</a></li>
+                        <li><a asp-controller="Course" asp-action="Index" class="active">Courses</a></li>
+                        <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="footer">Contact Us</a></li>
+                    </ul>
+
+
+            </nav>
+
+
+            <div class="header-actions">
+
+                <button class="header-action-btn" aria-label="search" title="Search" id="searchToggle">
+                    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                </button>
+
+                <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+                @* <a asp-controller="Cart" asp-action="Index" class="header-action-btn" aria-label="cart" title="Shopping Cart"> *@
+                @*     <ion-icon name="cart-outline" aria-hidden="true"></ion-icon> *@
+                @*     <span class="btn-badge">2</span> *@
+                @* </a> *@
+                <!-- <a href="dashboard.html" class="btn has-before">
+                  <span class="span">Class room</span> -->
+                @* <a href="signup.html" class="btn has-before"> *@
+                @*     <span class="span">sign up</span> *@
+
+
+                @*     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon> *@
+                @* </a> *@
+
+                @* <div class="overlay" data-nav-toggler data-overlay></div> *@
+                @* <div class="search-container" id="searchContainer"> *@
+                @*     <div class="search-wrapper"> *@
+                @*         <input type="text" placeholder="Search..." class="search-input"> *@
+                @*         <button class="search-submit" aria-label="Submit search"> *@
+                @*             <ion-icon name="search-outline" aria-hidden="true"></ion-icon> *@
+                @*         </button> *@
+                @*     </div> *@
+                @* </div> *@
+    </header>
+
+
+    <main class="container">
+      
+
+        <article class="course-detail">
+            <div class="course-header">
+                <span class="article-tag">CODING</span>
+                <h1>Backend Development Course</h1>
+                <div class="article-meta">
+                    <span><i class="icon-calendar"></i> SEPT 23, 2025</span>
+                    <span><i class="icon-comment"></i> Com 09</span>
+                </div>
+            </div>
+
+            <div class="course-image">
+                <img src="/images/Backend-Development.png" alt="Backend Development" />
+            </div>
+
+            <div class="course-content">
+                <h2>Become a Backend Developer</h2>
+                <p>
+                    Backend development focuses on server-side programming that powers
+                    web applications. This comprehensive course will teach you how to
+                    create robust, scalable, and secure backend systems.
+                </p>
+
+                <h3>Course Overview</h3>
+                <p>
+                    In this intensive 12-week program, you'll learn all the essential
+                    skills needed to become a professional backend developer, from
+                    database design to API development and server management.
+                </p>
+
+                <h3>What You'll Learn</h3>
+                <ul>
+                    <li>Server-side programming languages (Node.js, Python, Java)</li>
+                    <li>Database design and management (SQL and NoSQL)</li>
+                    <li>RESTful API development</li>
+                    <li>Authentication and authorization</li>
+                    <li>Server deployment and management</li>
+                    <li>Performance optimization</li>
+                    <li>Security best practices</li>
+                </ul>
+
+                <h3>Course Structure</h3>
+                <p>
+                    The course is divided into modules, each focusing on a specific
+                    aspect of backend development:
+                </p>
+                <ol>
+                    <li>
+                        <strong>Foundations:</strong> Understanding web architecture and
+                        server-client communication
+                    </li>
+                    <li>
+                        <strong>Programming:</strong> Deep dive into server-side languages
+                    </li>
+                    <li>
+                        <strong>Databases:</strong> Data modeling, retrieval, and
+                        manipulation
+                    </li>
+                    <li>
+                        <strong>APIs:</strong> Design and implementation of RESTful
+                        services
+                    </li>
+                    <li>
+                        <strong>Authentication:</strong> User management and security
+                    </li>
+                    <li>
+                        <strong>Deployment:</strong> Server setup and application hosting
+                    </li>
+                    <li>
+                        <strong>Final Project:</strong> Building a complete backend system
+                    </li>
+                </ol>
+
+                <h3>Prerequisites</h3>
+                <p>
+                    Basic programming knowledge is recommended but not required. Our
+                    course starts with fundamentals and gradually progresses to advanced
+                    topics.
+                </p>
+
+
+        </article>
+
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 EduPro. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

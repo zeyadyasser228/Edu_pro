@@ -1,0 +1,143 @@
+﻿@{
+
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Development Course - EduPro</title>
+    <link rel="stylesheet" href="~/css/blog.css" />
+    <link rel="stylesheet" href="~/css/edupro.css">
+</head>
+<body>
+    <header class="header" data-header>
+        <div class="container">
+
+            <a asp-controller="EduPro" asp-action="Index" class="logo">
+                <img src="~/images/logo.jpeg" width="75" height="50" alt="EduWeb logo">
+            </a>
+
+            <nav class="navbar" data-navbar>
+
+                <div class="wrapper">
+                    <a href="#" class="logo">
+                    </a>
+
+                    <button class="nav-close-btn" aria-label="close menu" data-nav-toggler>
+                        <ion-icon name="close-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+
+                <ul class="navbar-list">
+                    <ul class="navbar-list">
+                        <li><a asp-controller="EduPro" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="about">About</a></li>
+                        <li><a asp-controller="Course" asp-action="Index" class="active">Courses</a></li>
+                        <li><a asp-controller="EduPro" asp-action="Index" asp-fragment="footer">Contact Us</a></li>
+                    </ul>
+
+
+            </nav>
+
+
+            <div class="header-actions">
+
+                <button class="header-action-btn" aria-label="search" title="Search" id="searchToggle">
+                    <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
+                </button>
+
+                <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+                @* <a asp-controller="Cart" asp-action="Index" class="header-action-btn" aria-label="cart" title="Shopping Cart"> *@
+                @*     <ion-icon name="cart-outline" aria-hidden="true"></ion-icon> *@
+                @*     <span class="btn-badge">2</span> *@
+                @* </a> *@
+                <!-- <a href="dashboard.html" class="btn has-before">
+                  <span class="span">Class room</span> -->
+                @* <a href="signup.html" class="btn has-before"> *@
+                @*     <span class="span">sign up</span> *@
+
+
+                @*     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon> *@
+                @* </a> *@
+
+                @* <div class="overlay" data-nav-toggler data-overlay></div> *@
+                @* <div class="search-container" id="searchContainer"> *@
+                @*     <div class="search-wrapper"> *@
+                @*         <input type="text" placeholder="Search..." class="search-input"> *@
+                @*         <button class="search-submit" aria-label="Submit search"> *@
+                @*             <ion-icon name="search-outline" aria-hidden="true"></ion-icon> *@
+                @*         </button> *@
+                @*     </div> *@
+                @* </div> *@
+    </header>
+
+
+    <main class="container">
+  
+
+        <article class="course-detail">
+            <div class="course-header">
+                <span class="article-tag">CODING</span>
+                <h1>Frontend Development Course</h1>
+                <div class="article-meta">
+                    <span><i class="icon-calendar"></i> DEC 10, 2025</span>
+                    <span><i class="icon-comment"></i> Com 09</span>
+                </div>
+            </div>
+
+            <div class="course-image">
+                <img src="~/images/Front.png" alt="Frontend Development">
+            </div>
+
+            <div class="course-content">
+                <h2>Master Frontend Development</h2>
+                <p>Frontend development is the art and science of creating beautiful, interactive user interfaces for websites and web applications. This comprehensive course will take you from basics to advanced techniques in modern frontend development.</p>
+
+                <h3>Course Overview</h3>
+                <p>Our 10-week program covers all aspects of frontend development, including HTML, CSS, JavaScript, and modern frameworks. You'll build responsive websites and interactive web applications while following industry best practices.</p>
+
+                <h3>What You'll Learn</h3>
+                <ul>
+                    <li>HTML5 semantic markup</li>
+                    <li>CSS3 and modern layout techniques (Flexbox, Grid)</li>
+                    <li>JavaScript fundamentals and ES6+ features</li>
+                    <li>React.js framework</li>
+                    <li>Responsive design principles</li>
+                    <li>UI/UX fundamentals</li>
+                    <li>Web accessibility</li>
+                    <li>Frontend performance optimization</li>
+                </ul>
+
+                <h3>Course Structure</h3>
+                <p>The course is divided into modules that build progressively:</p>
+                <ol>
+                    <li><strong>Fundamentals:</strong> HTML, CSS basics, and document structure</li>
+                    <li><strong>Styling:</strong> Advanced CSS techniques and responsive design</li>
+                    <li><strong>Interactivity:</strong> JavaScript fundamentals and DOM manipulation</li>
+                    <li><strong>Modern JS:</strong> ES6+ features and asynchronous programming</li>
+                    <li><strong>React:</strong> Component-based UI development</li>
+                    <li><strong>State Management:</strong> Managing application data</li>
+                    <li><strong>Performance:</strong> Optimization techniques</li>
+                    <li><strong>Final Project:</strong> Building a complete frontend application</li>
+                </ol>
+
+                <h3>Prerequisites</h3>
+                <p>No prior programming experience is required, though basic computer literacy is expected. This course is suitable for beginners and those looking to formalize their self-taught skills.</p>
+
+               
+            </div>
+        </article>
+
+     
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 EduPro. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
