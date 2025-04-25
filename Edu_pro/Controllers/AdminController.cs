@@ -75,7 +75,7 @@ namespace Edu_pro.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
@@ -152,10 +152,9 @@ namespace Edu_pro.Controllers
 
         // Method 2: Add course POST
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCourse(CourseModel course, IFormFile imageFile)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 if (imageFile != null && imageFile.Length > 0)
                 {
