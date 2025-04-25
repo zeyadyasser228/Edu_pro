@@ -45,21 +45,21 @@ builder.Services.AddControllersWithViews(); //
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        EduPro.Data.SeedData.Initialize(services);
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogInformation("Database seeded successfully.");
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while seeding the database.");
-    }
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    try
+//    {
+//        //EduPro.Data.SeedData.Initialize(services);
+//        var logger = services.GetRequiredService<ILogger<Program>>();
+//        logger.LogInformation("Database seeded successfully.");
+//    }
+//    catch (Exception ex)
+//    {
+//        var logger = services.GetRequiredService<ILogger<Program>>();
+//        logger.LogError(ex, "An error occurred while seeding the database.");
+//    }
+//}
 
 if (app.Environment.IsDevelopment())
 {

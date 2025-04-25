@@ -24,6 +24,10 @@ namespace EduPro.Models
         [Required]
         public string ProfilePhotoPath { get; set; }
 
+        [Required]
+        [StringLength(20)]
+        public string Role { get; set; } = "User"; // Default role is "User"
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // sa3a al computer
 
         public DateTime? LastLoginAt { get; set; } // login at 

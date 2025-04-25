@@ -30,7 +30,7 @@ namespace EduPro.Controllers
             IWebHostEnvironment environment,
             ILogger<AuthController> logger,
             IEmailService emailService)
-             
+
         {
             _userService = userService;
             _errorLogService = errorLogService;
@@ -100,7 +100,8 @@ namespace EduPro.Controllers
                     Password = model.Password,
                     ProfilePhotoPath = uniqueFileName,
                     CreatedAt = DateTime.UtcNow,
-                    IsActive = true
+                    IsActive = true,
+                    Role = "User" // Default role for new users
                 };
 
                 await _userService.CreateUserAsync(user);
@@ -139,11 +140,12 @@ namespace EduPro.Controllers
                 await _userService.UpdateLastLoginAsync(user.Id);
 
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.FullName),
-            new Claim(ClaimTypes.Email, user.Email)
-        };
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    new Claim(ClaimTypes.Name, user.FullName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role) // Add role as a claim
+                };
 
                 var claimsIdentity = new ClaimsIdentity(
                     claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -161,14 +163,17 @@ namespace EduPro.Controllers
 
                 _logger.LogInformation($"User {model.Email} logged in successfully");
 
-
-
                 // b4of lw fe courses kant fel cart 
                 if (TempData["PendingCourseId"] != null)
                 {
                     int courseId = (int)TempData["PendingCourseId"];
-             
                     return RedirectToAction("AddToCart", "Cart", new { courseId });
+                }
+
+                // Redirect admin users to admin dashboard if needed
+                if (user.Role == "Admin")
+                {
+                    return RedirectToAction("Index", "Admin");
                 }
 
                 return RedirectToAction("Index", "EduPro");
@@ -275,6 +280,7 @@ namespace EduPro.Controllers
                 return Json(new { success = false, message = "An error occurred. Please try again." });
             }
         }
+
         [HttpPost]
         public async Task<IActionResult> ResetPassword(string email, string newPassword)
         {
@@ -303,10 +309,5 @@ namespace EduPro.Controllers
                 return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
         }
-
-
     }
-
-
-
 }
