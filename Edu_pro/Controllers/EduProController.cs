@@ -52,10 +52,10 @@ namespace Edu_pro.Controllers
             return View("course");
         }
 
-        public IActionResult Settings()
-        {
-            return View("Settings");
-        }
+        //public IActionResult Settings()
+        //{
+        //    return View("Settings");
+        //}
 
         //public IActionResult Cart()
         //{
