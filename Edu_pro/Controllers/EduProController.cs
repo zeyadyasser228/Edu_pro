@@ -56,10 +56,10 @@ namespace Edu_pro.Controllers
             return View("Settings");
         }
 
-        public IActionResult Cart()
-        {
-            return View("Cart");
-        }
+        //public IActionResult Cart()
+        //{
+           
+        //}
 
 
         public IActionResult MyCourses()
@@ -67,6 +67,6 @@ namespace Edu_pro.Controllers
             return RedirectToAction("MyCourses", "Courses");
         }
 
-
+        
     }
 }
