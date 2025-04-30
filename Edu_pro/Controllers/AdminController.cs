@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using EduPro.Data;
-using EduPro.Filer;
+using EduPro.Filter;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Edu_pro.Controllers

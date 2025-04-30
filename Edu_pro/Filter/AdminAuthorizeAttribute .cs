@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace EduPro.Filer
+namespace EduPro.Filter
+
 {
     public class AdminAuthorizeAttribute : AuthorizeAttribute
     {
