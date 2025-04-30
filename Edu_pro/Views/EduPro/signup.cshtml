@@ -88,6 +88,37 @@
                 transform: none;
                 box-shadow: none;
             }
+
+        /* Password field container */
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Password toggle button */
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 20%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .password-toggle:hover {
+                color: #4b5563;
+            }
+
+        /* Make sure password fields have right padding for the eye icon */
+        .password-field {
+            padding-right: 40px !important;
+        }
     </style>
 </head>
 <body>
@@ -109,14 +140,20 @@
                 <div class="form-group">
                     <input name="Email" type="email" placeholder="Email" required value="@signupModel.Email" />
                 </div>
-                <div class="form-group">
-                    <input name="Password" type="password" placeholder="Password" required />
+                <div class="form-group password-container">
+                    <input name="Password" type="password" placeholder="Password" required class="password-field" id="signupPassword" />
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility('signupPassword', 'signupPasswordToggle')">
+                        <i class="fa fa-eye" id="signupPasswordToggle"></i>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <input name="ConfirmPassword" type="password" placeholder="Confirm Password" required />
+                <div class="form-group password-container">
+                    <input name="ConfirmPassword" type="password" placeholder="Confirm Password" required class="password-field" id="confirmPassword" />
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility('confirmPassword', 'confirmPasswordToggle')">
+                        <i class="fa fa-eye" id="confirmPasswordToggle"></i>
+                    </button>
                 </div>
                 <div class="form-group file-input-container">
-                   
+
                     <input id="photoUpload" name="Photo" type="file" accept="image/*" required />
                     <label for="photoUpload" class="file-input-label">
                         <i class="fas fa-upload"></i> Upload Profile Photo
@@ -141,8 +178,11 @@
                 <div class="form-group">
                     <input name="Email" type="email" placeholder="Email" required value="@loginModel.Email" />
                 </div>
-                <div class="form-group">
-                    <input name="Password" type="password" placeholder="Password" required />
+                <div class="form-group password-container">
+                    <input name="Password" type="password" placeholder="Password" required class="password-field" id="loginPassword" />
+                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility('loginPassword', 'loginPasswordToggle')">
+                        <i class="fa fa-eye" id="loginPasswordToggle"></i>
+                    </button>
                 </div>
                 <div class="form-group checkbox-group">
                     <label>
@@ -178,6 +218,22 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
     <script>
+        // Password visibility toggle function
+        function togglePasswordVisibility(inputId, toggleId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.getElementById(toggleId);
+
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        }
+
         // Toast notification system
         function showToast(message, type = 'success', duration = 5000) {
             const container = document.getElementById('toastContainer');
@@ -247,7 +303,7 @@
         @if (!isLoginModel)
         {
             <text>
-                    container.classList.add("right-panel-active");
+                        container.classList.add("right-panel-active");
             </text>
         }
 
@@ -279,7 +335,7 @@
                 foreach (var error in modelState.Errors)
                 {
                     <text>
-                                        showToast('@Html.Raw(error.ErrorMessage)', 'error');
+                                                    showToast('@Html.Raw(error.ErrorMessage)', 'error');
                     </text>
                 }
             }
@@ -289,7 +345,7 @@
         @if (TempData["SuccessMessage"] != null)
         {
             <text>
-                        showToast('@Html.Raw(TempData["SuccessMessage"])', 'success');
+                            showToast('@Html.Raw(TempData["SuccessMessage"])', 'success');
             </text>
         }
 
@@ -297,7 +353,7 @@
         @if (ViewData["SignupError"] != null)
         {
             <text>
-                        showToast('@Html.Raw(ViewData["SignupError"])', 'error');
+                            showToast('@Html.Raw(ViewData["SignupError"])', 'error');
             </text>
         }
         });

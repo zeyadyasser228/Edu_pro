@@ -309,5 +309,10 @@ namespace EduPro.Controllers
                 return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View("~/Views/EduPro/AccessDenied.cshtml"); // Create this view
+        }
     }
 }

@@ -7,9 +7,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using EduPro.Data;
+using EduPro.Filer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Edu_pro.Controllers
 {
+
+   
+
+    [AdminAuthorize]
+
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -200,43 +207,43 @@ namespace Edu_pro.Controllers
             return Json(course);
         }
 
-        // Method 4: Bulk delete courses
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BulkDeleteCourses(int[] ids)
-        {
-            if (ids == null || ids.Length == 0)
-            {
-                return BadRequest("No courses selected");
-            }
+        //// Method 4: Bulk delete courses
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> BulkDeleteCourses(int[] ids)
+        //{
+        //    if (ids == null || ids.Length == 0)
+        //    {
+        //        return BadRequest("No courses selected");
+        //    }
 
-            var courses = await _context.Courses.Where(c => ids.Contains(c.Id)).ToListAsync();
-            _context.Courses.RemoveRange(courses);
-            await _context.SaveChangesAsync();
+        //    var courses = await _context.Courses.Where(c => ids.Contains(c.Id)).ToListAsync();
+        //    _context.Courses.RemoveRange(courses);
+        //    await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
-        }
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        // Method 5: Bulk feature/unfeature courses
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BulkFeatureCourses(int[] ids, bool featured)
-        {
-            if (ids == null || ids.Length == 0)
-            {
-                return BadRequest("No courses selected");
-            }
+        //// Method 5: Bulk feature/unfeature courses
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> BulkFeatureCourses(int[] ids, bool featured)
+        //{
+        //    if (ids == null || ids.Length == 0)
+        //    {
+        //        return BadRequest("No courses selected");
+        //    }
 
-            var courses = await _context.Courses.Where(c => ids.Contains(c.Id)).ToListAsync();
-            foreach (var course in courses)
-            {
-                course.IsFeatured = featured;
-                course.UpdatedAt = DateTime.UtcNow;
-            }
+        //    var courses = await _context.Courses.Where(c => ids.Contains(c.Id)).ToListAsync();
+        //    foreach (var course in courses)
+        //    {
+        //        course.IsFeatured = featured;
+        //        course.UpdatedAt = DateTime.UtcNow;
+        //    }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         // Helper method to check if a course exists
         private bool CourseExists(int id)

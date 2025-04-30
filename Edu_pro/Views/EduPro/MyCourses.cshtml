@@ -451,10 +451,9 @@
                 <button class="header-action-btn search-toggle" aria-label="toggle search" title="Search" id="searchToggle">
                     <ion-icon name="search-outline" aria-hidden="true"></ion-icon>
                 </button>
-
                 <a asp-controller="Cart" asp-action="Index" class="header-action-btn" aria-label="cart" title="Shopping Cart">
                     <ion-icon name="cart-outline" aria-hidden="true"></ion-icon>
-                    <span class="btn-badge">2</span>
+                    <span class="btn-badge">0</span>
                 </a>
 
                 @if (User.Identity.IsAuthenticated)

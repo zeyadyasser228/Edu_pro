@@ -1657,14 +1657,7 @@ body {
         font-size: 20px;
     }
 
-    .user-dropdown-toggle {
-        padding: 3px 5px;
-    }
-
-    .user-dropdown-menu {
-        right: -50px;
-        min-width: 200px;
-    }
+  
 
     .hero-banner .img-holder.one,
     .hero-banner .img-holder.two {

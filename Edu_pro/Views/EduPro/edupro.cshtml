@@ -27,8 +27,8 @@
 
     <style>
         /*-----------------------------------*\
-                    #USER DROPDOWN
-                \*-----------------------------------*/
+                            #USER DROPDOWN
+                        \*-----------------------------------*/
 
         .user-dropdown {
             position: relative; /* Needed for absolute positioning of the menu */
@@ -158,51 +158,42 @@
 
         /* Responsive styles for dropdown */
         @@media (max-width: 991px) {
-            .header-actions
+            .header-actions {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
 
-        {
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .user-dropdown-menu {
-            left: auto;
-            right: 0;
-            min-width: 250px;
-        }
-
+            .user-dropdown-menu {
+                left: auto;
+                right: 0;
+                min-width: 250px;
+            }
         }
 
         @@media (max-width: 768px) {
-            .user-dropdown
-
-        {
-            margin-left: 5px;
-        }
-
-        .user-dropdown-toggle {
-            padding: 3px 6px;
-        }
-
-            .user-dropdown-toggle span {
-                display: none; /* Hide username text on mobile */
+            .user-dropdown {
+                margin-left: 5px;
             }
 
-        .user-dropdown-menu {
-            min-width: 200px;
-            right: -10px;
-        }
+            .user-dropdown-toggle {
+                padding: 3px 6px;
+            }
 
+                .user-dropdown-toggle span {
+                    display: none; /* Hide username text on mobile */
+                }
+
+            .user-dropdown-menu {
+                min-width: 200px;
+                right: -10px;
+            }
         }
 
         @@media (max-width: 576px) {
-            .user-dropdown-menu
-
-        {
-            right: -50px;
-            min-width: 200px;
-        }
-
+            .user-dropdown-menu {
+                right: -50px;
+                min-width: 200px;
+            }
         }
     </style>
 
