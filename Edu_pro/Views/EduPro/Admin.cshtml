@@ -141,6 +141,16 @@
                     </button>
                 </div>
 
+                <!-- Add this near the top of your admin navigation -->
+                <div class="admin-nav mb-4">
+                    <a href="@Url.Action("Index", "Admin")" class="btn btn-outline-success me-2">
+                        <i class="fas fa-list"></i> Course List
+                    </a>
+                    <a href="@Url.Action("Analytics", "Admin")" class="btn btn-success">
+                        <i class="fas fa-chart-line"></i> Analytics Dashboard
+                    </a>
+                </div>
+
                 <!-- Course Filter and Search -->
                 <div class="row mb-3">
                     <div class="col-md-6 col-sm-12 filter-container">

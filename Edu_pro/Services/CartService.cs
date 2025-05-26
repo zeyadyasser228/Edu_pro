@@ -10,7 +10,7 @@ namespace EduPro.Services
 {
     public class CartService : ICartService
     {
-        private readonly ApplicationDbContext _context; 
+        private readonly ApplicationDbContext _context;
         private readonly ICourseService _courseService;
 
         public CartService(ApplicationDbContext context, ICourseService courseService)
@@ -55,7 +55,7 @@ namespace EduPro.Services
                 return existingItem;
             }
 
-             // lw kol aly fat 8alt 
+            // lw kol aly fat 8alt 
             var cartItem = new CartItemModel
             {
                 UserId = userId,
@@ -104,7 +104,7 @@ namespace EduPro.Services
 
             return true;
         }
-        
+
         public async Task<int> GetCartItemCountAsync(int userId)
         {
             return await _context.CartItems

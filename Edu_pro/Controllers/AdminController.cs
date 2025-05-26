@@ -9,11 +9,14 @@ using Microsoft.AspNetCore.Http;
 using EduPro.Data;
 using EduPro.Filter;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using Edu_pro.Models;
 
 namespace Edu_pro.Controllers
 {
 
-   
+
+    //[Authorize(Roles ="Admin")]
 
     [AdminAuthorize]
 
@@ -26,14 +29,12 @@ namespace Edu_pro.Controllers
             _context = context;
         }
 
-        // Method 1: Index method with filtering and pagination
         public async Task<IActionResult> Index(string searchTerm, string category, string featured, int page = 1)
         {
-            const int pageSize = 10; // Number of courses per page
+            const int pageSize = 10;
 
             var query = _context.Courses.AsQueryable();
 
-            // Apply filters if provided
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(c => c.Title.Contains(searchTerm) || c.Description.Contains(searchTerm));
@@ -50,7 +51,6 @@ namespace Edu_pro.Controllers
                 query = query.Where(c => c.IsFeatured == isFeatured);
             }
 
-            // Calculate pagination
             var totalItems = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
 
@@ -72,7 +72,6 @@ namespace Edu_pro.Controllers
             return View("~/Views/EduPro/Admin.cshtml", courses);
         }
 
-        // Method 2: Edit course POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCourse(int id, CourseModel course, IFormFile imageFile)
@@ -135,13 +134,11 @@ namespace Edu_pro.Controllers
                 }
             }
 
-            // If we get here, something failed, redisplay form
             var courses = await _context.Courses.OrderByDescending(c => c.CreatedAt).Take(10).ToListAsync();
             ViewBag.ErrorMessage = "Failed to update course. Please check the form and try again.";
             return View("~/Views/EduPro/Admin.cshtml", courses);
         }
 
-        // Method 2: Delete course
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteCourse(int id)
@@ -157,7 +154,6 @@ namespace Edu_pro.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Method 2: Add course POST
         [HttpPost]
         public async Task<IActionResult> AddCourse(CourseModel course, IFormFile imageFile)
         {
@@ -195,7 +191,6 @@ namespace Edu_pro.Controllers
             return View("~/Views/EduPro/Admin.cshtml", courses);
         }
 
-        // Method 3: Get course data for the edit form
         [HttpGet]
         public async Task<IActionResult> GetCourseData(int id)
         {
@@ -207,45 +202,9 @@ namespace Edu_pro.Controllers
             return Json(course);
         }
 
-        //// Method 4: Bulk delete courses
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> BulkDeleteCourses(int[] ids)
-        //{
-        //    if (ids == null || ids.Length == 0)
-        //    {
-        //        return BadRequest("No courses selected");
-        //    }
+    
 
-        //    var courses = await _context.Courses.Where(c => ids.Contains(c.Id)).ToListAsync();
-        //    _context.Courses.RemoveRange(courses);
-        //    await _context.SaveChangesAsync();
-
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //// Method 5: Bulk feature/unfeature courses
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> BulkFeatureCourses(int[] ids, bool featured)
-        //{
-        //    if (ids == null || ids.Length == 0)
-        //    {
-        //        return BadRequest("No courses selected");
-        //    }
-
-        //    var courses = await _context.Courses.Where(c => ids.Contains(c.Id)).ToListAsync();
-        //    foreach (var course in courses)
-        //    {
-        //        course.IsFeatured = featured;
-        //        course.UpdatedAt = DateTime.UtcNow;
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        // Helper method to check if a course exists
+     
         private bool CourseExists(int id)
         {
             return _context.Courses.Any(e => e.Id == id);
@@ -256,7 +215,6 @@ namespace Edu_pro.Controllers
             {
                 bool canConnect = _context.Database.CanConnect();
 
-                // Try to get a count
                 int courseCount = _context.Courses.Count();
 
                 // Try to add a test course
@@ -283,6 +241,171 @@ namespace Edu_pro.Controllers
             {
                 return Content($"Error: {ex.Message}, Inner: {ex.InnerException?.Message}");
             }
+        }
+
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Analytics()
+        {
+            try
+            {
+                var topCourses = await _context.Courses
+                    .OrderByDescending(c => c.StudentsEnrolled)
+                    .Take(5)
+                    .Select(c => new CourseAnalytics
+                    {
+                        Id = c.Id,
+                        CourseName = c.Title,
+                        EnrollmentCount = c.StudentsEnrolled,
+                        CompletionRate = GetStaticCompletionRate(c.StudentsEnrolled),
+                        AverageRating = c.Rating,
+                        Revenue = c.Price * c.StudentsEnrolled,
+                        LastUpdated = c.UpdatedAt ?? c.CreatedAt
+                    })
+                    .ToListAsync();
+
+                var totalStudents = await _context.Courses.SumAsync(c => (int?)c.StudentsEnrolled) ?? 0;
+                var activeEnrollments = await _context.Courses
+                    .Where(c => c.CreatedAt >= DateTime.Now.AddMonths(-1))
+                    .SumAsync(c => (int?)c.StudentsEnrolled) ?? 0;
+                var totalRevenue = await _context.Courses
+                    .SumAsync(c => (decimal?)(c.Price * c.StudentsEnrolled)) ?? 0;
+
+                var categoryEnrollments = await _context.Courses
+                    .GroupBy(c => c.Category)
+                    .Select(g => new { g.Key, Count = g.Sum(c => c.StudentsEnrolled) })
+                    .ToDictionaryAsync(x => x.Key ?? "Uncategorized", x => x.Count);
+
+                var recentCourses = await _context.Courses
+                    .Where(c => c.CreatedAt >= DateTime.Now.AddMonths(-6))
+                    .ToListAsync();
+
+                var enrollmentsByMonth = Enumerable.Range(0, 6)
+                    .Select(i => DateTime.Now.AddMonths(-i))
+                    .Reverse()
+                    .ToDictionary(
+                        date => date.ToString("MMMM"),
+                        date => recentCourses
+                            .Where(c => c.CreatedAt.Month == date.Month && c.CreatedAt.Year == date.Year)
+                            .Sum(c => c.StudentsEnrolled)
+                    );
+
+                var analytics = new DashboardAnalytics
+                {
+                    TopCourses = topCourses,
+                    TotalStudents = totalStudents,
+                    ActiveEnrollments = activeEnrollments,
+                    TotalRevenue = totalRevenue,
+                    EnrollmentsByCategory = categoryEnrollments,
+                    EnrollmentsByMonth = enrollmentsByMonth
+                };
+
+                return View(analytics);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Analytics error: {ex.Message}");
+
+                var fallback = new DashboardAnalytics
+                {
+                    TopCourses = new List<CourseAnalytics>(),
+                    TotalStudents = 0,
+                    ActiveEnrollments = 0,
+                    TotalRevenue = 0,
+                    EnrollmentsByCategory = new Dictionary<string, int> { ["No Data"] = 0 },
+                    EnrollmentsByMonth = Enumerable.Range(0, 6)
+                        .Select(i => DateTime.Now.AddMonths(-i).ToString("MMMM"))
+                        .ToDictionary(m => m, m => 0)
+                };
+
+                return View(fallback);
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<JsonResult> GetAnalyticsData()
+        {
+            try
+            {
+                var courses = await _context.Courses.ToListAsync();
+                
+                if (!courses.Any())
+                {
+                    return Json(new
+                    {
+                        enrollmentTrend = new[] { new { month = DateTime.Now.ToString("MMM"), count = 0 } },
+                        topCourses = new object[0],
+                        revenueByCategory = new object[0],
+                        totalRevenue = 0,
+                        totalStudents = 0,
+                        activeEnrollments = 0,
+                        averageRating = 0.0
+                    });
+                }
+
+                var analyticsData = new
+                {
+                    enrollmentTrend = await _context.Courses
+                        .Where(c => c.CreatedAt >= DateTime.Now.AddMonths(-6))
+                        .GroupBy(c => c.CreatedAt.ToString("MMM"))
+                        .Select(g => new { month = g.Key, count = g.Sum(c => c.StudentsEnrolled) })
+                        .ToListAsync(),
+
+                    topCourses = await _context.Courses
+                        .OrderByDescending(c => c.StudentsEnrolled)
+                        .Take(5)
+                        .Select(c => new 
+                        { 
+                            name = c.Title ?? "Untitled Course", 
+                            count = c.StudentsEnrolled,
+                            rating = c.Rating,
+                            revenue = c.Price * c.StudentsEnrolled,
+                            completionRate = GetStaticCompletionRate(c.StudentsEnrolled)
+                        })
+                        .ToListAsync(),
+
+                    revenueByCategory = await _context.Courses
+                        .GroupBy(c => c.Category ?? "Uncategorized")
+                        .Select(g => new 
+                        { 
+                            category = g.Key, 
+                            revenue = g.Sum(c => c.Price * c.StudentsEnrolled) 
+                        })
+                        .ToListAsync(),
+
+                    totalRevenue = await _context.Courses.SumAsync(c => (decimal?)c.Price * c.StudentsEnrolled) ?? 0,
+                    totalStudents = await _context.Courses.SumAsync(c => (int?)c.StudentsEnrolled) ?? 0,
+                    activeEnrollments = await _context.Courses
+                        .Where(c => c.CreatedAt >= DateTime.Now.AddMonths(-1))
+                        .SumAsync(c => (int?)c.StudentsEnrolled) ?? 0,
+                    averageRating = await _context.Courses
+                        .Where(c => c.Rating > 0)
+                        .Select(c => (double?)c.Rating)
+                        .DefaultIfEmpty(0)
+                        .AverageAsync() ?? 0
+                };
+
+                return Json(analyticsData);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in GetAnalyticsData: {ex.Message}");
+                return Json(new { error = "Failed to load analytics data" });
+            }
+        }
+
+        // Static method to calculate completion rate
+        private static decimal GetStaticCompletionRate(int enrollments)
+        {
+            if (enrollments <= 0) return 0;
+            
+            decimal baseRate = 70.0m;
+            decimal enrollmentFactor = Math.Min(enrollments / 100.0m, 0.2m);
+            return Math.Min(baseRate + (enrollmentFactor * 100), 95.0m);
         }
     }
 

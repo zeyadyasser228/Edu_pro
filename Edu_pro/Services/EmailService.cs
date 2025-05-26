@@ -22,6 +22,8 @@ namespace EduPro.Services
         {
             try
             {
+
+                // take the data in the configurations 
                 var fromEmail = _configuration["EmailSettings:FromEmail"];
                 var smtpServer = _configuration["EmailSettings:SmtpServer"];
                 var port = int.Parse(_configuration["EmailSettings:Port"]);

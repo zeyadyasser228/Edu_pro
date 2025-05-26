@@ -10,21 +10,22 @@ namespace EduPro.Data
         {
         }
 
-        public DbSet<UserModel> Users { get; set; }
-        public DbSet<ErrorLog> ErrorLogs { get; set; }
-        public DbSet<CourseModel> Courses { get; set; }
-        public DbSet<CartItemModel> CartItems { get; set; }
-        public DbSet<UserCourseModel> UserCourses { get; set; }
+        public DbSet<UserModel> Users { get; set; } // user on the website 
+        public DbSet<ErrorLog> ErrorLogs { get; set; } // error faces the website 
+        public DbSet<CourseModel> Courses { get; set; } // Courses aly 3ndna 
+        public DbSet<CartItemModel> CartItems { get; set; } // Each user have cart (User & Cart )
+        public DbSet<UserCourseModel> UserCourses { get; set; } // user cours (User & Courses )
 
-
+        // 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // user entity hna index 3la al email 
+            // Fluent APi 
             modelBuilder.Entity<UserModel>()
                 .HasIndex(u => u.Email)
-                .IsUnique();
+                .IsUnique(); // cannot Be Duplicated 
         }
     }
 }

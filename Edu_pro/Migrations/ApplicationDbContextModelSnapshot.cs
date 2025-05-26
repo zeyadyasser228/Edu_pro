@@ -45,7 +45,7 @@ namespace Edu_pro.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("EduPro.Models.CourseModel", b =>
@@ -114,7 +114,7 @@ namespace Edu_pro.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("EduPro.Models.ErrorLog", b =>
@@ -178,7 +178,7 @@ namespace Edu_pro.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ErrorLogs");
+                    b.ToTable("ErrorLogs", (string)null);
                 });
 
             modelBuilder.Entity("EduPro.Models.UserCourseModel", b =>
@@ -210,7 +210,7 @@ namespace Edu_pro.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCourses");
+                    b.ToTable("UserCourses", (string)null);
                 });
 
             modelBuilder.Entity("EduPro.Models.UserModel", b =>
@@ -265,7 +265,7 @@ namespace Edu_pro.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("EduPro.Models.CartItemModel", b =>

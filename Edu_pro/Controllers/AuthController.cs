@@ -144,7 +144,7 @@ namespace EduPro.Controllers
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.FullName),
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role) // Add role as a claim
+                    new Claim(ClaimTypes.Role, user.Role) 
                 };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -237,7 +237,7 @@ namespace EduPro.Controllers
 
                     await _emailService.SendEmailAsync(email, subject, message);
 
-                    return Json(new { success = true });
+                    return Json(new { success = true ,});
                 }
                 catch (Exception emailEx)
                 {

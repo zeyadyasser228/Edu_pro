@@ -1,0 +1,119 @@
+@* Add Font Awesome for icons *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="~/css/chat.css">
+
+<div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+        <h3>
+            <i class="fas fa-graduation-cap"></i>
+            Educational Assistant
+        </h3>
+        <button class="close-btn" onclick="toggleChat()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="chat-messages" id="chatMessages">
+        <div class="message assistant">
+            <div class="message-content">
+                👋 Hello! I'm your educational assistant. How can I help you today?
+            </div>
+        </div>
+    </div>
+    
+    <div class="chat-input">
+        <input type="text" 
+               id="messageInput" 
+               placeholder="Ask a question..." 
+               onkeypress="if(event.key === 'Enter') sendMessage()">
+        <button onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+</div>
+
+<script>
+let isTyping = false;
+
+function toggleChat() {
+    const container = document.getElementById('chatContainer');
+    container.style.display = container.style.display === 'none' ? 'block' : 'none';
+}
+
+function addMessage(message, isUser = false) {
+    const messagesDiv = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+    messageDiv.innerHTML = `
+        <div class="message-content">
+            ${message}
+        </div>
+    `;
+    messagesDiv.appendChild(messageDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function showTypingIndicator() {
+    if (!isTyping) {
+        isTyping = true;
+        const messagesDiv = document.getElementById('chatMessages');
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = `
+            <span></span>
+            <span></span>
+            <span></span>
+        `;
+        messagesDiv.appendChild(typingDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+}
+
+function hideTypingIndicator() {
+    isTyping = false;
+    const typingIndicator = document.getElementById('typingIndicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
+async function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const message = input.value.trim();
+    
+    if (message) {
+        // Add user message
+        addMessage(message, true);
+        input.value = '';
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        try {
+            // Send message to server
+            const response = await fetch('/Chat/GetResponse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(message)
+            });
+            
+            const data = await response.json();
+            
+            // Hide typing indicator and add response
+            hideTypingIndicator();
+            addMessage(data.response);
+        } catch (error) {
+            hideTypingIndicator();
+            addMessage('I apologize, but I encountered an error. Please try again.');
+        }
+    }
+}
+
+// Format bullet points in messages
+function formatBulletPoints(message) {
+    return message.replace(/•/g, '<br>•');
+}
+</script> 

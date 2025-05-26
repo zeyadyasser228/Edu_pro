@@ -1,4 +1,4 @@
-﻿using EduPro.Models;
+using EduPro.Models;
 using EduPro.Models.ViewModels;
 using EduPro.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -90,5 +90,4 @@ namespace EduPro.Controllers
             }
         }
     }
-    
-}
+} 

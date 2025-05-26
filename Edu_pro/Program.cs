@@ -28,7 +28,15 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IUserCourseService, UserCourseService>();
+builder.Services.AddScoped<IChatService, LLMRouterService>();
 
+// Add logging
+builder.Services.AddLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddConsole();
+    logging.AddDebug();
+});
 
 // authencation on cookie 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -56,15 +64,16 @@ else
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(); // view request bootstrap w Css 
 
-app.UseRouting();
+app.UseRouting(); // from controller to controller 
 
-app.UseSession();
+app.UseSession(); // use local stroage 
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthentication();  // user or admin 
+app.UseAuthorization(); // user activitites & admin activities tanyha 5als 
 
+// Configure routes
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=EduPro}/{action=Index}/{id?}");

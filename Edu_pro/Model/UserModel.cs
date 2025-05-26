@@ -6,11 +6,11 @@ namespace EduPro.Models
 {
     public class UserModel
     {
-        [Key] // primary key 
+        [Key] // primary key  // data annotation 
         public int Id { get; set; }
 
         [Required(ErrorMessage ="FullName or Username is Requird")]
-        [StringLength(100)]
+        [StringLength(100)] // avoid Nvarchar(max)
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "Email is Requird")]

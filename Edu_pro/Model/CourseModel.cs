@@ -48,7 +48,7 @@ namespace EduPro.Models
 
         [StringLength(255)]
         public string ExternalUrl { get; set; } // Optional
-
+            
         public bool IsFeatured { get; set; } = false; // 
          
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Edu_pro.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     @* <header> *@
@@ -36,11 +37,413 @@
         </main>
     </div>
 
+    @* Add Chat Widget *@
+    <partial name="_ChatWidget" />
+
     @* <footer class="border-top footer text-muted"> *@
     @*     <div class="container"> *@
     @*         &copy; 2025 - Edu_pro - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
     @*     </div> *@
     @* </footer> *@
+    <footer>
+        <!-- Chat Interface -->
+        <div id="chat-container" class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    Educational Assistant
+                </div>
+                <button onclick="toggleChat()" class="chat-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <div class="chat-input-container">
+                <input type="text" 
+                       id="chat-input" 
+                       placeholder="Ask a question..." 
+                       class="chat-input"
+                       onkeypress="if(event.key === 'Enter') sendMessage()">
+                <button onclick="sendMessage()" class="chat-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Button -->
+        <button id="chat-button" onclick="toggleChat()" class="chat-toggle-button">
+            <i class="fas fa-comments"></i>
+        </button>
+    </footer>
+
+    <style>
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            z-index: 1000;
+            overflow: hidden;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            border: 1px solid #e1e1e1;
+        }
+
+        .chat-header {
+            padding: 15px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .chat-title {
+            font-weight: 600;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            transition: transform 0.2s;
+        }
+
+        .chat-close:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f8f9fa;
+        }
+
+        .chat-message {
+            max-width: 85%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 5px 0;
+            animation: fadeIn 0.3s ease;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+
+        .ai-message {
+            background: white;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e1e1e1;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 20px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .chat-input:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+        }
+
+        .chat-send {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .chat-send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+        }
+
+        .chat-send i {
+            font-size: 18px;
+        }
+
+        .chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-toggle-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .chat-toggle-button i {
+            font-size: 24px;
+        }
+
+        /* Typing indicator */
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            padding: 5px 10px;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #28a745;
+            border-radius: 50%;
+            animation: typing-bounce 1s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @@keyframes typing-bounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+
+        @@keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Custom scrollbar */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #28a745;
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #20c997;
+        }
+
+        /* Bullet points */
+        .ai-message ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .ai-message li {
+            margin: 5px 0;
+            position: relative;
+            list-style: none;
+        }
+
+        .ai-message li:before {
+            content: "•";
+            color: #28a745;
+            font-weight: bold;
+            position: absolute;
+            left: -15px;
+        }
+    </style>
+
+    <script>
+        function toggleChat() {
+            const container = document.getElementById('chat-container');
+            const button = document.getElementById('chat-button');
+            const isVisible = container.style.display === 'flex';
+            
+            container.style.display = isVisible ? 'none' : 'flex';
+            button.innerHTML = isVisible ? 
+                '<i class="fas fa-comments"></i>' : 
+                '<i class="fas fa-times"></i>';
+            
+            if (!isVisible) {
+                document.getElementById('chat-input').focus();
+            }
+        }
+
+        function addMessageToChat(message, type) {
+            const messagesDiv = document.getElementById('chat-messages');
+            const messageElement = document.createElement('div');
+            messageElement.className = `chat-message ${type}-message`;
+            
+            // Convert bullet points to HTML list
+            if (type === 'ai' && message.includes('•')) {
+                const parts = message.split('\n');
+                const formattedParts = parts.map(part => {
+                    if (part.trim().startsWith('•')) {
+                        return `<li>${part.trim().substring(1).trim()}</li>`;
+                    }
+                    return `<p>${part}</p>`;
+                });
+                
+                messageElement.innerHTML = formattedParts
+                    .join('')
+                    .replace(/<li>/g, '<ul><li>')
+                    .replace(/<\/li>\n*$/, '</li></ul>')
+                    .replace(/<\/li>\n*<p>/, '</li></ul><p>');
+            } else {
+                messageElement.textContent = message;
+            }
+            
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        // Initialize with a welcome message
+        window.addEventListener('load', () => {
+            const initialMessage = "👋 Hello! I'm your educational assistant. How can I help you today?";
+            addMessageToChat(initialMessage, 'ai');
+        });
+
+        // Add predefined responses
+        const courseResponses = {
+            'data science': `Here are our comprehensive Data Science course offerings:
+
+• Python for Data Science
+  - Python basics for data analysis
+  - NumPy and Pandas fundamentals
+  - Data visualization with Matplotlib
+  - Duration: 8 weeks
+
+• Machine Learning Fundamentals
+  - Statistical learning concepts
+  - Supervised & unsupervised learning
+  - Model evaluation techniques
+  - Duration: 12 weeks
+
+• Advanced Data Analytics
+  - Big Data processing
+  - Deep Learning & Neural Networks
+  - Real-world project implementation
+  - Duration: 16 weeks
+
+• Specialized Tracks
+  - Natural Language Processing
+  - Computer Vision
+  - Time Series Analysis
+  - Duration: 10 weeks each
+
+Would you like more details about any specific course?`
+        };
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim().toLowerCase();
+            if (!message) return;
+
+            // Clear input and disable
+            input.value = '';
+            input.disabled = true;
+            
+            // Add user message
+            addMessageToChat(message, 'user');
+
+            try {
+                // Show typing indicator
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'chat-message ai-message typing';
+                typingIndicator.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+                document.getElementById('chat-messages').appendChild(typingIndicator);
+
+                // Simulate response delay
+                await new Promise(resolve => setTimeout(resolve, 1000));
+
+                // Remove typing indicator
+                typingIndicator.remove();
+
+                // Check for predefined responses first
+                let response;
+                if (message.includes('data science')) {
+                    response = courseResponses['data science'];
+                } else {
+                    // If no predefined response, send to server
+                    const serverResponse = await fetch('/Chat/GetResponse', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(message)
+                    });
+                    const data = await serverResponse.json();
+                    response = data.response;
+                }
+                
+                // Add AI response
+                addMessageToChat(response, 'ai');
+            } catch (error) {
+                addMessageToChat('Sorry, I encountered an error. Please try again.', 'ai');
+            } finally {
+                // Re-enable input
+                input.disabled = false;
+                input.focus();
+            }
+        }
+    </script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -18,7 +18,6 @@ namespace EduPro.Models
         [Required]
         public DateTime AddedAt { get; set; } = DateTime.UtcNow;
 
-        // Navigation properties
         [ForeignKey("UserId")]
         public UserModel User { get; set; }
 

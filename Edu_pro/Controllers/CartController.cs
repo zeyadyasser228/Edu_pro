@@ -70,7 +70,6 @@ namespace EduPro.Controllers
                 return View("~/Views/EduPro/Cart.cshtml", new CartViewModel());
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> AddToCart(int courseId)
         {

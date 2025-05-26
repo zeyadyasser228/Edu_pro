@@ -21,11 +21,15 @@ namespace EduPro.Services
         // Check Authenicated or not 
         public async Task<UserModel> AuthenticateAsync(string email, string password)
         {
+            // password : zeyad123456789
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 return null;
             // Check Database Found or Not 
             // Back for Data of the user
              var user = await _context.Users.SingleOrDefaultAsync(x => x.Email == email);
+
+             /* user : user 
+              null*/
           
             // user exist or no 
             if (user == null)
@@ -97,6 +101,7 @@ namespace EduPro.Services
 
         private bool VerifyPasswordHash(string password, string storedHash)
         {
+            // zeyad1234567889
             string computedHash = HashPassword(password);
             return computedHash.Equals(storedHash);
         }
